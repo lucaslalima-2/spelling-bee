@@ -2,7 +2,7 @@
 Loads master library with values into memory.
 """
 # Variables
-from variables import master_dictionary
+from data.variables import master_dictionary
 
 # Functions
 from util.check_panagram import checkPanagram

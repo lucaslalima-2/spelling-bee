@@ -15,7 +15,7 @@ from util.check_panagram import checkPanagram
 
 # Variables
 from session.session import session
-from variables import answers_file
+from data.variables import answers_file
 
 #input_box = widgets.Text(description="Word:")
 #output = widgets.Output()
@@ -43,7 +43,7 @@ def main():
   session.master_set = set(todays_word)
   session.center_letter = center_letter.upper()
 
-  # Find all possible words & calculate max_score
+  # Find all possible words
   session.answers = getAnswersList()
 
   # Print answers to file
@@ -68,8 +68,6 @@ def main():
     # Updates previous list
     session.previous_answers.append(answer)
     print(f"+{session.master_dictionary[answer]}")
-
-  # Track user guesses
 
   # Generate display / game
 
