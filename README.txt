@@ -9,6 +9,16 @@ https://gist.githubusercontent.com/deostroll/7693b6f3d48b44a89ee5f57bf750bd32/ra
 This command helps generate list of words greater than 3 letters:
   awk -F, 'length($0) >=4 { print }' ./master_library.txt >| output.txt
 
+The following directory structure is used:
+spellingbee/
+├── app.py
+├── templates/
+│   └── index.html
+├── static/
+│   ├── style.css
+│   └── script.js
+├── game.py  ← your existing Python logic
+
 RULES:
 =====
 - Words must be at least 4 letters long. 

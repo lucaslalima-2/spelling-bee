@@ -1,13 +1,16 @@
 """ Session class stores all necessary info for the current game instance"""
 
+# Functions
+from util.get_answers_list import getAnswersList
+
 class Session:
   def __init__(self):
-    self.answers = None
+    self.answers = []
     self.center_letter = None
-    self.master_dictionary = None
-    self.master_set = None
-    self.master_word = None
+    self.dictionary = None
+    self.letters = None
     self.max_score = None
+    self.panagram = None
     self.percentages = [
       [0.00, "Good Start"],
       [0.15, "Moving Up"],
@@ -23,7 +26,7 @@ class Session:
     self.score = 0
     return
 
-  def updateScore(self, val):
+  def update_score(self, val):
     """ Each time we update score, we need to check rank"""
     self.score += val
     cur_percent = self.score / self.max_score
@@ -41,10 +44,28 @@ class Session:
     self.rank = self.percentages[pcur][1]
     return
 
+  def set_panagram(self, panagram, letter):
+    """ Sets session variables from panagram """
+    self.panagram = panagram
+    self.letters = set(panagram)
+    self.center_letter = letter
+    self.answers = self.get_answers_list()
+    return
+
+  def get_answers_list(self):
+    """ Generates possible answers for target panagram """
+    l = []
+    for word in self.dictionary.keys():
+      if self.center_letter in word:
+        if set(word).issubset(self.letters):
+          l.append(word)
+    return l
+
   def __str__(self):
+    """ Prints session attributes except dictionary """
     s = ""
     for a, b in self.__dict__.items():
-      if a!="master_dictionary":
+      if a!="dictionary":
         s += f"{a}: {b}\n"
     return s
 

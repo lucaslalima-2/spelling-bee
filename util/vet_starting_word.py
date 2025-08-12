@@ -6,7 +6,7 @@ from util.check_panagram import checkPanagram
 # Variables
 from session.session import session
 
-def vetInput(word):
+def vetStartingWord(word):
   # Check if word is in master dictionary
   dic = session.master_dictionary
   if word not in dic:

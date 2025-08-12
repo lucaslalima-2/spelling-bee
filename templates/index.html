@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Spelling Bee</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  </head>
+  <body>
+    <h1>Spelling Bee</h1>
+    <p class="panagram">Today's Panagram: {{target}}</p>
+    <input type="text" id="wordInput" placeholder="Enter a word">
+    <button id="enterButton" onclick="submitWord()">Enter</button>
+    <div id="result"></div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

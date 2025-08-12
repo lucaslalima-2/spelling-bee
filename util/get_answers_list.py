@@ -3,13 +3,10 @@ Generates all possible answers for daily word.
 Returns list
 """
 
-# Variables
-from session.session import session
-
-def getAnswersList():
+def getAnswersList(session):
   l = []
-  letter_set = session.master_set
-  for k in session.master_dictionary.keys():
+  letters = session.letters
+  for k in session.dictionary.keys():
     if session.center_letter in k:
       if set(k).issubset(letter_set):
         l.append(k)

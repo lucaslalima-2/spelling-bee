@@ -7,7 +7,7 @@ from IPython.display import display
 
 # Functions
 from util.load_dictionary import loadDictionary
-from util.vet_input import vetInput
+from util.vet_starting_word import vetStartingWord
 from util.get_answers_list import getAnswersList
 from util.get_max_score import getMaxScore
 from util.check_answer import checkAnswer
@@ -29,7 +29,7 @@ def main():
   flag = False
   while not flag:
     todays_word = input("Input today's panagram: ").upper()
-    flag = vetInput(todays_word)
+    flag = vetStartingWord(todays_word)
 
   # Prompts user for essential letter / middle letter
   flag = False
@@ -39,7 +39,7 @@ def main():
     if not flag:
       print("(E) Spelling Bee -> main.py: Invalid. Input must len()=1 & must be in panagram.")
 
-  session.master_word = todays_word
+  session.panagram = todays_word
   session.master_set = set(todays_word)
   session.center_letter = center_letter.upper()
 
@@ -64,7 +64,7 @@ def main():
     # Checks pagram
     panagram = checkPanagram(answer)
     # Updates score
-    session.updateScore(session.master_dictionary[answer])
+    session.update_score(session.master_dictionary[answer])
     # Updates previous list
     session.previous_answers.append(answer)
     print(f"+{session.master_dictionary[answer]}")
