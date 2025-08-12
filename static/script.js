@@ -17,6 +17,13 @@ function submitWord() {
 } //function
 
 /*
+ * Function clears answer input field on Enter click
+*/
+function clearWord() {
+  document.getElementById("wordInput").value = "";
+}//function
+
+/*
  * Event listener to Enter button
 */
 document.getElementById("wordInput").addEventListener("keydown", function(event) {

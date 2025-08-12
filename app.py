@@ -2,6 +2,8 @@
 
 # GUI Libraries
 from flask import Flask, render_template, request, jsonify
+import threading
+import webbrowser
 
 # Python Libraries
 import argparse
@@ -13,6 +15,13 @@ from util.load_dictionary import loadDictionary
 
 # Variables
 from session.session import session
+
+"""
+Helps automatically open browser
+"""
+def open_browser():
+  webbrowser.open_new("http://127.0.0.1:5000/")
+  return
 
 """
 Initialization
@@ -50,4 +59,5 @@ def check_word(): # function name is trivial
   return jsonify({"valid": res})
 
 if __name__ == "__main__":
+  threading.Timer(1.0, open_browser).start()
   app.run(debug=True)
