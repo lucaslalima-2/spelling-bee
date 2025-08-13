@@ -46,9 +46,9 @@ class Session:
 
   def set_panagram(self, panagram, letter):
     """ Sets session variables from panagram """
-    self.panagram = panagram
-    self.letters = set(panagram)
-    self.center_letter = letter
+    self.panagram = panagram.upper()
+    self.letters = set(self.panagram)
+    self.center_letter = letter.upper()
     self.answers = self.get_answers_list()
     return
 
