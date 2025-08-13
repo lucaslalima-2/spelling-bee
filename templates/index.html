@@ -6,9 +6,14 @@
   </head>
   <body>
     <h1>Spelling Bee</h1>
-    <p class="panagram">Today's Panagram: {{target}}</p>
-    <input type="text" id="wordInput" placeholder="Enter a word">
-    <button id="enterButton" onclick="submitWord(); clearWord()">Enter</button>
+    <p class="panagram">Today's Panagram: {{panagram}}</p>
+    <div id="score-container">
+      <h3>Score; <span id="score">{{score}}</span></h3>
+    </div>
+    <form id="word-form" autocomplete="off">
+      <input type="text" name="word" id="word-input" placeholder="Enter a word">
+      <button id="enter-button" type="submit">Enter</button>
+    </form>
     <div id="result"></div>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
   </body>

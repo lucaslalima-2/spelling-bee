@@ -1,9 +1,8 @@
 #!/opt/xsite/cte/tools/python/latest/bin/python3 
 
 # GUI Libraries
-from flask import Flask, render_template, request, jsonify
-import threading
-import webbrowser
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+import threading, webbrowser
 
 # Python Libraries
 import argparse
@@ -20,7 +19,9 @@ from session.session import session
 Helps automatically open browser
 """
 def open_browser():
-  webbrowser.open_new("http://127.0.0.1:5000/")
+  browser = webbrowser.get("firefox")
+  browser.open_new("http://127.0.0.1:5000/")
+  #webbrowser.open_new_tab("http://127.0.0.1:5000/")
   return
 
 """
@@ -48,16 +49,36 @@ Application backend
 """
 app = Flask(__name__)
 
+"""
+Initializes webpage
+"""
 @app.route("/")
 def index():
-  return render_template("index.html", target=session.panagram)
+  if request.method=="POST": pass #handles form submission or AJAX 
+  return render_template("index.html", panagram=session.panagram, score=session.score)
 
-@app.route("/check", methods=["POST"])
-def check_word(): # function name is trivial
-  word = request.json.get("word", "").lower()
-  res = _checkAnswer(word)
-  return jsonify({"valid": res})
+#"""
+#Checks if word is valid, as defined by _checkAnser
+#"""
+#@app.route("/check-word", methods=["POST"])
+#def check_word(): # function name is trivial
+#  word = request.json.get("word", "").lower()
+#  res = _checkAnswer(word)
+#  return jsonify({"valid": res})
+
+"""
+Define behavior on submit-word
+"""
+@app.route("/submit_answer", methods=["POST"])
+def submit_answer():
+  data = request.get_json()
+  word = data.get("word", "").upper() # allows for json parse
+  if word in session.answers:
+    session.score = session.dictionary[word]
+    return jsonify({"status": "success", "word": word})
+  else:
+    return jsonify({"status": "fail", "word": word})
 
 if __name__ == "__main__":
   threading.Timer(1.0, open_browser).start()
-  app.run(debug=True)
+  app.run(debug=True, use_reloader=False)
