@@ -44,7 +44,7 @@ def submit_answer():
     return jsonify({"status": "fail", "word": word})
 
 """ Anchor """
-if __name__ == "__main__": 
+if __name__ == "__main__":
   # Handles input
   parser = argparse.ArgumentParser(description="Luke's Spelling Bee")
   parser.add_argument("-w", "--word", required=True, help="Daily panagram!")
