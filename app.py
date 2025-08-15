@@ -2,7 +2,7 @@
 
 # GUI Libraries
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-import threading, webbrowser
+import threading, webbrowser, os
 
 # Python Libraries
 import argparse
@@ -20,7 +20,8 @@ app = Flask(__name__)
 
 """ Helps automatically open browser """
 def open_browser():
-  browser = webbrowser.get("firefox")
+  system = "mac" if os.name=="posix" else "windows"
+  browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
   browser.open_new("http://127.0.0.1:5000/")
   #webbrowser.open_new_tab("http://127.0.0.1:5000/")
   return
