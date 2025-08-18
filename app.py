@@ -36,10 +36,10 @@ def index():
 @app.route("/submit_answer", methods=["POST"])
 def submit_answer():
   data = request.get_json()
-  word = data.get("word", "").upper() # allows for json parse
+  word = data.get("word", "")
   if word in session.answers:
-    session.score = session.dictionary[word]
-    return jsonify({"status": "success", "word": word})
+    value = session.dictionary[word]
+    return jsonify({"status": "success", "word": word, "value": value})
   else:
     return jsonify({"status": "fail", "word": word})
 

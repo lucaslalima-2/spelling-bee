@@ -1,9 +1,11 @@
-/*
- * Function connected to enter function
-*/
+// Variables
+"use strict";
+let score = 0;
+let word_bank = new Set();
 
+/* Function called when word is submitted */
 function submitWord() {
-  const word = document.getElementById("word-input").value;
+  let word = document.getElementById("word-input").value.toUpperCase();
 
   // Sends function request to app.py defined function
   fetch("/submit_answer", {
@@ -13,12 +15,27 @@ function submitWord() {
   })// fetch
   .then(response => response.json())
   .then(data =>{
-    //const result = document.getElementById("result");
-    //result.textcontext = data.valid ? "Valid" : "Invalid"
-    console.log("Server response: ", data)
+    // console.log("Server response: ", data)
+    // Clear word
     clearWord()
-  });//then
+    
+    // Successful answer
+    const success = data["status"]
+    if(success=="success") {
+      const value = data["value"];      
+      if(!word_bank.has(word)){
+        word_bank.add(word); // stores word
+        score += value; // updates score
+      } // if word_bank
+      updateScore() // update score 
+    }; //if success
+  });//then data
 } //function
+
+// Function updates score 
+function updateScore(){
+  document.getElementById("score").textContent = score;
+}
 
 /* Function clears answer input field on Enter click */
 function clearWord() {
