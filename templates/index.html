@@ -15,10 +15,24 @@
       <button id="enter-button" type="submit">Enter</button>
     </form>
     <div id="result"></div>
+    
+    <!-- Rank section -->
+    <div id="rank-markers">○○○○○○○</div>
+    <!-- Container section  -->
     <div id="word-list-container">
       <h3>Correct Words:</h3>
       <pre id="word-list"></pre>
     </div>
+    
+    <!-- Inline script: define the variable -->
+    <script>
+      window.FLASK_DATA = {
+        max_score:  {{max_score}}
+      };
+    </script>
+
+    <!-- External script: use the variable -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+
   </body>
 </html>
