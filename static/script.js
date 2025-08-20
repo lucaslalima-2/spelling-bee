@@ -22,12 +22,13 @@ function submitWord() {
     // Successful answer
     const success = data["status"]
     if(success=="success") {
-      const value = data["value"];      
+      const value = data["value"];  
       if(!word_bank.has(word)){
         word_bank.add(word); // stores word
         score += value; // updates score
       } // if word_bank
-      updateScore() // update score 
+      updateScore() // update score
+      updateWordList()
     }; //if success
   });//then data
 } //function
@@ -35,6 +36,18 @@ function submitWord() {
 // Function updates score 
 function updateScore(){
   document.getElementById("score").textContent = score;
+} // updateScore
+
+// Function updates wordlist
+function updateWordList(){
+  let sorted_words =Array.from(word_bank).sort();
+  let word_list = document.getElementById("word-list");
+  word_list.innerHTML = ''; // Clear current list
+  let post_string = '';
+  for( let word of sorted_words){
+    post_string += word + '\n';
+  }//for
+  word_list.innerHTML = post_string;
 }
 
 /* Function clears answer input field on Enter click */
