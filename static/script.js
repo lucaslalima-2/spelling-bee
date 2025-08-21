@@ -1,6 +1,9 @@
 // Variables
 "use strict";
+const center_letter = window.FLASK_DATA.center_letter;
+const ring_letters = window.FLASK_DATA.ring_letters;
 const max_score = window.FLASK_DATA.max_score;
+const panagram = window.FLASK_DATA.panagram;
 const percentages = [
   [0.00, "Good Start"],
   [0.15, "Moving Up"],
@@ -13,6 +16,12 @@ const percentages = [
 ]
 let score = 0;
 let word_bank = new Set();
+
+// Letter placement & tie to behavior
+document.querySelector("#hex-center .hex-letter").textContent = center_letter;
+[0, 1, 2, 3, 4, 5].forEach((i) => {
+  document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
+});
 
 /* Function called when word is submitted */
 function submitWord() {
@@ -29,7 +38,6 @@ function submitWord() {
     // console.log("Server response: ", data)
 
     clearWord() // clears word
-    
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
@@ -44,6 +52,7 @@ function submitWord() {
 // Function updates score 
 function updateScore(value){
   score += value;
+  console.log("score:", score);
   document.getElementById("score").textContent = score;
 } // function
 
@@ -82,27 +91,35 @@ function updateRank(){
   // rank_stars.style.fontFamily = 'monospace';
 }// function 
 
-
-/* Function clears answer input field on Enter click */
+// Function clears answer input field on Enter click
 function clearWord() {
   document.getElementById("word-input").value = "";
-}//function
+}
+// Event listener for hex click
+document.querySelectorAll(".hex").forEach(hex =>{
+  hex.addEventListener("click", () => {
+    const letter = hex.textContent;
+    document.getElementById("word-input").value += letter;
+    
+    hex.classList.add('clicked');
+    setTimeout(() => { hex.classList.remove("clicked");}, 200);
+  }); // addEventListener
+}) // forEach
 
-/* Event listener for any call of type="submit"; runs submitWord() */
-document.getElementById("word-form").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevent default form submission
-  submitWord();           // Call your custom function
-}); // addEventListener
+// Event listener for Content loads. Auto-focus cursor on page load
+document.addEventListener("DOMContentLoaded", () => {
+  const wordInput = document.getElementById("word-input");
+  const enterButton = document.getElementById("enter-button");
 
-/* Event listener to Enter button; submits call type="submit" */
-document.getElementById("word-input").addEventListener("keydown", function(event) {
-  if(event.key==="Enter") {
-    event.preventDefault(); // Optional: prevents form submission
-    document.getElementById("enter-button").click(); // submits request of type="submit"
-  }//if
-})// addEventListener
+  wordInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      enterButton.click();
+    }
+  }); // event listener
 
-/* Event listener for Content loads. Auto-focus cursor on page load */
-window.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("word-input").focus();
-}); // addEventListener
+  enterButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    submitWord();
+  }); // event listener
+});

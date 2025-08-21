@@ -22,13 +22,19 @@ app = Flask(__name__)
 @app.route("/")
 def index():
   if request.method=="POST": pass #handles form submission or AJAX 
-  return render_template("index.html", panagram=session.panagram, max_score=session.max_score)
+  return render_template("index.html",
+  panagram=session.panagram, 
+  center_letter=session.center_letter,
+  ring_letters=session.ring_letters,
+  max_score=session.max_score
+  )
 
 """ Define behavior on submit-word """
 @app.route("/submit_answer", methods=["POST"])
 def submit_answer():
   data = request.get_json()
   word = data.get("word", "")
+
   if word in session.answers:
     value = session.dictionary[word]
     return jsonify({"status": "success", "word": word, "value": value})
@@ -63,7 +69,6 @@ if __name__ == "__main__":
   session.dictionary = load_dictionary()
   session.set_panagram(panagram, center_letter)
   session.max_score = get_max_score()
-  print(session.answers)
 
   # App running
   threading.Timer(1.0, open_browser).start()

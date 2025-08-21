@@ -11,45 +11,16 @@ class Session:
     self.letters = None
     self.max_score = None
     self.panagram = None
-    # self.percentages = [
-    #   [0.00, "Good Start"],
-    #   [0.15, "Moving Up"],
-    #   [0.25, "Good"],
-    #   [0.40, "Solid"],
-    #   [0.50, "Nice"],
-    #   [0.75, "Great"],
-    #   [0.90, "Amazing"],
-    #   [1.00, "Genius"]
-    # ]
-    # self.previous_answers = []
-    # self.rank = self.percentages[0][1]
+    self.ring_letters = None
     self.score = 0
     return
-
-  # === moved to .js
-  # def update_score(self, val):
-  #   """ Each time we update score, we need to check rank"""
-  #   self.score += val
-  #   cur_percent = self.score / self.max_score
-
-  #   pcur = 0 # pointer
-  #   pnext = 1
-  #   while pnext < len(self.percentages):
-  #     next_percent = self.percentages[pnext][0]
-  #     if cur_percent >= next_percent:
-  #       pcur = pnext
-  #       pnext += 1
-  #     else:
-  #       break
-
-  #   self.rank = self.percentages[pcur][1]
-  #   return
 
   def set_panagram(self, panagram, letter):
     """ Sets session variables from panagram """
     self.panagram = panagram.upper()
-    self.letters = set(self.panagram)
     self.center_letter = letter.upper()
+    self.letters = set([x.upper() for x in panagram])
+    self.ring_letters = [x for x in list(self.letters) if x!=self.center_letter]
     self.answers = self.get_answers_list()
     return
 
