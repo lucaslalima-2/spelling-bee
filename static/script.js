@@ -91,18 +91,21 @@ function updateRank(){
   // rank_stars.style.fontFamily = 'monospace';
 }// function 
 
+// Function clears answer input field on Enter click
+function clearWord() {
+  document.getElementById("word-input").value = "";
+}
+
 // Event listener for hex click
 document.querySelectorAll(".hex").forEach(hex =>{
   hex.addEventListener("click", () => {
     const letter = hex.textContent;
     document.getElementById("word-input").value += letter;
+    
+    hex.classList.add('clicked');
+    setTimeout(() => { hex.classList.remove("clicked");}, 200);
   }); // addEventListener
 }) // forEach
-
-// Function clears answer input field on Enter click
-function clearWord() {
-  document.getElementById("word-input").value = "";
-}
 
 // Event listener for any call of type="submit"; runs submitWord()
 document.getElementById("word-form").addEventListener("submit", function(event) {
