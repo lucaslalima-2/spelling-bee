@@ -39,6 +39,14 @@
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
+  transform: rotate(30deg);
+}
+
+.hex-letter {
+  transform: rotate(-30deg);
+  font-size: 24px;
+  font-weight: bold;
+  pointer-events: none;
 }
 
 .center {
@@ -47,8 +55,8 @@
 
 /* Positioning each hexagon */
 #hex-center { top: 95px; left: 95px; }
-#hex-0 { top: 30px; left: 95px; }
-#hex-1 { top: 65px; left: 160px; }
+#hex-0 { top: 40px; left: 95px; } /* 12-oclock hex */
+#hex-1 { top: 68px; left: 143px; } /* 2-oclock hex */
 #hex-2 { top: 125px; left: 160px; }
 #hex-3 { top: 160px; left: 95px; }
 #hex-4 { top: 125px; left: 30px; }

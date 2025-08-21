@@ -18,9 +18,9 @@ let score = 0;
 let word_bank = new Set();
 
 // Letter placement
-document.getElementById("hex-center").textContent = center_letter;
+document.querySelector("#hex-center .hex-letter").textContent = center_letter;
 [0, 1, 2, 3, 4, 5].forEach((i) => {
-  document.getElementById(`hex-${i}`).textContent = ring_letters[i];
+  document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
 });
 
 /* Function called when word is submitted */
@@ -38,7 +38,6 @@ function submitWord() {
     // console.log("Server response: ", data)
 
     clearWord() // clears word
-    console.log("HERE", data);
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
