@@ -8,9 +8,9 @@ import threading, webbrowser, os
 import argparse
 
 # Functions
-from util._checkAnswer import _checkAnswer
-from util.check_panagram import checkPanagram
-from util.load_dictionary import loadDictionary
+from util.check_panagram import check_panagram
+from util.load_dictionary import load_dictionary
+from util.get_max_score import get_max_score
 
 # Variables
 from session.session import session
@@ -18,20 +18,11 @@ from session.session import session
 # Application intialization and thread start
 app = Flask(__name__)
 
-""" Helps automatically open browser """
-def open_browser():
-  # system = "mac" if os.name=="posix" else "windows"
-  system = "windows"
-  browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
-  browser.open_new("http://127.0.0.1:5000/")
-  #webbrowser.open_new_tab("http://127.0.0.1:5000/")
-  return
-
 """ Initializes webpage """
 @app.route("/")
 def index():
   if request.method=="POST": pass #handles form submission or AJAX 
-  return render_template("index.html", panagram=session.panagram, score=session.score)
+  return render_template("index.html", panagram=session.panagram, max_score=session.max_score)
 
 """ Define behavior on submit-word """
 @app.route("/submit_answer", methods=["POST"])
@@ -44,6 +35,15 @@ def submit_answer():
   else:
     return jsonify({"status": "fail", "word": word})
 
+""" Helps automatically open browser """
+def open_browser():
+  # system = "mac" if os.name=="posix" else "windows"
+  system = "windows"
+  browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
+  browser.open_new("http://127.0.0.1:5000/")
+  #webbrowser.open_new_tab("http://127.0.0.1:5000/")
+  return
+
 """ Anchor """
 if __name__ == "__main__":
   # Handles input
@@ -55,13 +55,15 @@ if __name__ == "__main__":
   center_letter = vars(args)["letter"]
 
   # Checks panagram
-  proceed = checkPanagram(panagram)
+  proceed = check_panagram(panagram)
   if not proceed: print("Spelling Bee -> app.py: Invalid panagram."); exit()
   else: print(f"Spelling Bee: Panagram approved={panagram}. Happy spelling!")
 
   # Stores session
-  session.dictionary = loadDictionary()
+  session.dictionary = load_dictionary()
   session.set_panagram(panagram, center_letter)
+  session.max_score = get_max_score()
+  print(session.answers)
 
   # App running
   threading.Timer(1.0, open_browser).start()
