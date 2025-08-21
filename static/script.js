@@ -62,18 +62,24 @@ function updateWordList(word){
 
 // Function updates rank
 function updateRank(){
-  let rank_container = document.getElementById("rank-markers");
+  let rank_stars = document.getElementById("rank-stars");
+  let rank_status = document.getElementById("rank-status");
+  
+  // const rank_string = percentages.reduce((acc, p) =>
+  // acc + (score / max_score > p[0] ? '●' : '○'), '');
   let rank_string = "";
-  for(let i = 0; i < percentages.length; i++){
-    console.log("max score", max_score);
-    if(score > percentages[i]) {
-      rank_string += '●';    
+  let rank = "";
+  for(let i=0; i<percentages.length; i++){
+    if(score/max_score > percentages[i][0]){
+      rank_string += '●';
+      rank = percentages[i][1]
     } else {
-      rank_string += "○";
-    } // if-else
-  } // for
-  rank_container.textContent = rank_string;
-  rank_container.style.fontFamily = 'monospace';
+      rank_string += '○';
+    }// if-else
+  }// for
+  rank_status.textContent = rank;
+  rank_stars.textContent = rank_string;
+  // rank_stars.style.fontFamily = 'monospace';
 }// function 
 
 

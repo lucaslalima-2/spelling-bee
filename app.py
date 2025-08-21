@@ -63,6 +63,7 @@ if __name__ == "__main__":
   session.dictionary = load_dictionary()
   session.set_panagram(panagram, center_letter)
   session.max_score = get_max_score()
+  print(session.answers)
 
   # App running
   threading.Timer(1.0, open_browser).start()

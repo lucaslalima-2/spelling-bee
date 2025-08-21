@@ -17,7 +17,11 @@
     <div id="result"></div>
     
     <!-- Rank section -->
-    <div id="rank-markers">○○○○○○○</div>
+    <div id="rank-container">
+      <p id="rank-status">Good Start:</p>
+      <p id="rank-stars">○○○○○○○</p>
+    </div>
+    
     <!-- Container section  -->
     <div id="word-list-container">
       <h3>Correct Words:</h3>
@@ -27,7 +31,7 @@
     <!-- Inline script: define the variable -->
     <script>
       window.FLASK_DATA = {
-        max_score:  {{max_score}}
+        max_score : {{max_score | tojson}}
       };
     </script>
 
