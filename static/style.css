@@ -1,0 +1,55 @@
+#game-layout {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+#left-column, #right-column {
+  width: 48%;
+}
+
+#left-column {
+  border-right: 2px solid #ccc;
+  padding-right: 20px;
+}
+
+#right-column {
+  padding-left: 20px;
+}
+
+#honeycomb {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 20px auto;
+}
+
+.hex {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: #DCDBDB;
+  clip-path: polygon(
+    50% 0%, 93% 25%, 93% 75%,
+    50% 100%, 7% 75%, 7% 25%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.center {
+  background: #ffcc00;
+}
+
+/* Positioning each hexagon */
+#hex-center { top: 95px; left: 95px; }
+#hex-0 { top: 30px; left: 95px; }
+#hex-1 { top: 65px; left: 160px; }
+#hex-2 { top: 125px; left: 160px; }
+#hex-3 { top: 160px; left: 95px; }
+#hex-4 { top: 125px; left: 30px; }
+#hex-5 { top: 65px; left: 30px; }

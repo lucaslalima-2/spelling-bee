@@ -1,6 +1,9 @@
 // Variables
 "use strict";
+const center_letter = window.FLASK_DATA.center_letter;
+const ring_letters = window.FLASK_DATA.ring_letters;
 const max_score = window.FLASK_DATA.max_score;
+const panagram = window.FLASK_DATA.panagram;
 const percentages = [
   [0.00, "Good Start"],
   [0.15, "Moving Up"],
@@ -13,6 +16,12 @@ const percentages = [
 ]
 let score = 0;
 let word_bank = new Set();
+
+// Letter placement
+document.getElementById("hex-center").textContent = center_letter;
+[0, 1, 2, 3, 4, 5].forEach((i) => {
+  document.getElementById(`hex-${i}`).textContent = ring_letters[i];
+});
 
 /* Function called when word is submitted */
 function submitWord() {
@@ -29,7 +38,7 @@ function submitWord() {
     // console.log("Server response: ", data)
 
     clearWord() // clears word
-    
+    console.log("HERE", data);
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
@@ -44,6 +53,7 @@ function submitWord() {
 // Function updates score 
 function updateScore(value){
   score += value;
+  console.log("score:", score);
   document.getElementById("score").textContent = score;
 } // function
 
