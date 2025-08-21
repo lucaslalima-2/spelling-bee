@@ -17,7 +17,7 @@ const percentages = [
 let score = 0;
 let word_bank = new Set();
 
-// Letter placement
+// Letter placement & tie to behavior
 document.querySelector("#hex-center .hex-letter").textContent = center_letter;
 [0, 1, 2, 3, 4, 5].forEach((i) => {
   document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
@@ -95,7 +95,6 @@ function updateRank(){
 function clearWord() {
   document.getElementById("word-input").value = "";
 }
-
 // Event listener for hex click
 document.querySelectorAll(".hex").forEach(hex =>{
   hex.addEventListener("click", () => {
@@ -107,21 +106,20 @@ document.querySelectorAll(".hex").forEach(hex =>{
   }); // addEventListener
 }) // forEach
 
-// Event listener for any call of type="submit"; runs submitWord()
-document.getElementById("word-form").addEventListener("submit", function(event) {
-  event.preventDefault(); // Prevent default form submission
-  submitWord(); // Call your custom function
-})
-
-// Event listener to Enter button; submits call type="submit"
-document.getElementById("word-input").addEventListener("keydown", function(event) {
-  if(event.key==="Enter") {
-    event.preventDefault(); // Optional: prevents form submission
-    document.getElementById("enter-button").click(); // submits request of type="submit"
-  } //if
-})
-
 // Event listener for Content loads. Auto-focus cursor on page load
-window.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("word-input").focus();
-})
+document.addEventListener("DOMContentLoaded", () => {
+  const wordInput = document.getElementById("word-input");
+  const enterButton = document.getElementById("enter-button");
+
+  wordInput.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      enterButton.click();
+    }
+  }); // event listener
+
+  enterButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    submitWord();
+  }); // event listener
+});
