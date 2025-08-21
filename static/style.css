@@ -55,9 +55,9 @@
 
 /* Positioning each hexagon */
 #hex-center { top: 95px; left: 95px; }
-#hex-0 { top: 40px; left: 95px; } /* 12-oclock hex */
-#hex-1 { top: 68px; left: 143px; } /* 2-oclock hex */
-#hex-2 { top: 125px; left: 160px; }
-#hex-3 { top: 160px; left: 95px; }
-#hex-4 { top: 125px; left: 30px; }
-#hex-5 { top: 65px; left: 30px; }
+#hex-0 { top: 38px; left: 95px; } /* 12-oclock hex */
+#hex-1 { top: 67px; left: 144px; } /* 2-oclock hex */
+#hex-2 { top: 123px; left: 144px; } /* 4-oclock hex */
+#hex-3 { top: 152px; left: 95px; } /* 6-oclock hex */
+#hex-4 { top: 123px; left: 45px; } /* 8-oclock hex */
+#hex-5 { top: 65px; left: 45px; } /* 10-oclock hex */
