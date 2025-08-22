@@ -48,7 +48,6 @@ function submitWord() {
 // Function updates score 
 function updateScore(value){
   score += value;
-  console.log("score:", score);
   document.getElementById("score").textContent = score;
 } // function
 
@@ -102,13 +101,42 @@ function deleteInputEnd(){
 
 // Function to get new state of ring letters aka. "shuffle"
 function shuffleLetters() {
-  // Shuffles ring letters
-  ring_letters = shuffleArray(ring_letters);
-  [0, 1, 2, 3, 4, 5].forEach((i) => {
-    document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
+  const hex_letters= document.querySelectorAll(".hex-letter");
+
+  // Fade out
+  hex_letters.forEach(l => {
+    if(l.textContent !== center_letter) {
+      l.classList.add("fade-out");
+    }; // if
   });
-  // Places middle layer
-  document.querySelector("#hex-center .hex-letter").textContent = center_letter;
+
+  // Wait for fade-out to complete
+  setTimeout( () => {
+
+    // Shuffles ring letters
+    ring_letters = shuffleArray(ring_letters);
+    [0, 1, 2, 3, 4, 5].forEach((i) => {
+      document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
+    });
+    
+    // Places middle layer
+    document.querySelector("#hex-center .hex-letter").textContent = center_letter;
+
+    // Fade in
+    hex_letters.forEach(l => {
+      l.classList.remove("fade-out");
+      l.classList.add("fade-in");
+    }); // foreach
+
+    // Remove fade-in class
+    setTimeout(() => {
+      hex_letters.forEach(l => {
+        if (l.textContent !== center_letter) {
+          l.classList.remove("fade-in");
+        }; // if
+      });
+    }, 300); // match transition in .hex-letter
+  }, 300); // match transition in .hex-letter
 }; // function
 
 // More varied shuffling algorithm

@@ -62,7 +62,6 @@ body {
 .hex {
   width: 60px;
   height: 60px;
-  /* margin: -10px 0; */
   background: #DCDBDB;
   clip-path: polygon(
     50% 0%, 93% 25%, 93% 75%,
@@ -75,14 +74,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transform: rotate(-30deg);
-  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hex-letter {
-  transform: rotate(30deg);
-  font-size: 15px;
-  font-weight: bold;
-  pointer-events: none;
+  /* transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); */
 }
 
 .hex:active,
@@ -96,6 +88,21 @@ body {
   transition: transform 0.2s ease;
 }
 
+.hex-letter {
+  transform: rotate(30deg);
+  font-size: 15px;
+  font-weight: bold;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.hex-letter.fade-out {
+  opacity: 0;
+}
+
+.hex-letter.fade-in {
+  opacity: 1;
+}
 
 .center {
   background: #ffcc00;
