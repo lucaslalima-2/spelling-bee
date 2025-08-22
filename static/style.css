@@ -80,9 +80,17 @@
   pointer-events: none;
 }
 
+.hex:active,
+.hex:focus {
+  transform: rotate(-30deg); /* Match default */
+  outline: none;
+}
+
 .hex.clicked {
   transform: scale(0.95) rotate(-30deg);
+  transition: transform 0.2s ease;
 }
+
 
 .center {
   background: #ffcc00;

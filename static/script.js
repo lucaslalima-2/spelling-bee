@@ -1,7 +1,7 @@
 // Variables
 "use strict";
 const center_letter = window.FLASK_DATA.center_letter;
-const ring_letters = window.FLASK_DATA.ring_letters;
+let ring_letters = window.FLASK_DATA.ring_letters;
 const max_score = window.FLASK_DATA.max_score;
 const panagram = window.FLASK_DATA.panagram;
 const percentages = [
@@ -17,13 +17,7 @@ const percentages = [
 let score = 0;
 let word_bank = new Set();
 
-// Letter placement & tie to behavior
-document.querySelector("#hex-center .hex-letter").textContent = center_letter;
-[0, 1, 2, 3, 4, 5].forEach((i) => {
-  document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
-});
-
-/* Function called when word is submitted */
+// Function called when word is submitted
 function submitWord() {
   let word = document.getElementById("word-input").value.toUpperCase();
 
@@ -94,12 +88,51 @@ function updateRank(){
 // Function clears answer input field on Enter click
 function clearWord() {
   document.getElementById("word-input").value = "";
-}
+}// function
+
+// Function tied to delete button
+function deleteInputEnd(){  
+  const curinput = document.getElementById("word-input");
+  curinput.value = curinput.value.slice(0, -1);
+}// function
+
+// Function to get new state of ring letters aka. "shuffle"
+function shuffleLetters() {
+  ring_letters = shuffleArray(ring_letters);
+  [0, 1, 2, 3, 4, 5].forEach((i) => {
+    document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
+  });
+}; // function
+
+// More varied shuffling algorithm
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  } // for
+  return array;
+} // function
+
+document.querySelector("#hex-center .hex-letter").textContent = center_letter;
+[0, 1, 2, 3, 4, 5].forEach((i) => {
+  document.querySelector(`#hex-${i} .hex-letter`).textContent = ring_letters[i];
+});
+
+// Resets focus to the input field
+function resetFocus(){
+  document.getElementById("word-input").focus();
+}// function
+
 // Event listener for hex click
 document.querySelectorAll(".hex").forEach(hex =>{
   hex.addEventListener("click", () => {
+    hex.addEventListener("mousedown", (e) => e.preventDefault());
+
     const letter = hex.textContent;
-    document.getElementById("word-input").value += letter;
+    const wordInput = document.getElementById("word-input");
+    
+    wordInput.value += letter;
+    resetFocus();
     
     hex.classList.add('clicked');
     setTimeout(() => { hex.classList.remove("clicked");}, 200);
@@ -108,18 +141,47 @@ document.querySelectorAll(".hex").forEach(hex =>{
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("word-input").focus(); // Initializes focus
   const wordInput = document.getElementById("word-input");
   const enterButton = document.getElementById("enter-button");
+  const deleteButton = document.getElementById("delete-button");
+  const shuffleButton = document.getElementById("shuffle-button");
+
+  // Initializes game
+  shuffleLetters();
+
+  // Blur event ("user clicks away from input")
+  wordInput.addEventListener("blur", function() {
+    setTimeout(() => wordInput.focus(), 0);
+  }); // event listener
 
   wordInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       enterButton.click();
-    }
+    }; // if
+    
+    if (event.key == " ") {
+      event.preventDefault();
+      shuffleButton.click();
+    }; // if
   }); // event listener
 
   enterButton.addEventListener("click", function(event) {
     event.preventDefault();
     submitWord();
+    resetFocus();
+  }); // event listener
+
+  deleteButton.addEventListener("click", function(event){
+    event.preventDefault();
+    deleteInputEnd();
+    resetFocus()
+  }); // event listener
+
+  shuffleButton.addEventListener("click", function(event){
+    event.preventDefault();
+    shuffleLetters();
+    resetFocus();
   }); // event listener
 });
