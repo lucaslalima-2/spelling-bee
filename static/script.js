@@ -173,7 +173,14 @@ function setInputStyle() {
   word_display.addEventListener("input", () => {
     const raw_text = word_display.textContent.toUpperCase();
     const styled = [...raw_text].map(letter => {
-      const color = all_letters.includes(letter) ? 'black' : 'gray';
+      let color;
+      if(letter == center_letter) {
+        color = "#E9AB17";
+      } else if (all_letters.includes(letter)) {
+        color = "black";
+      } else {
+        color = "grey"; 
+      }// if-else colors letters
       return `<span style="color:${color}">${letter}</span>`;
     }).join("");
 
