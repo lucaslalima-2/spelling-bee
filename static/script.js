@@ -94,7 +94,19 @@ function updateRank(){
 // Function clears answer input field on Enter click
 function clearWord() {
   document.getElementById("word-input").value = "";
-}
+}// function
+
+// Function tied to delete button
+function deleteInputEnd(){  
+  const curinput = document.getElementById("word-input");
+  curinput.value = curinput.value.slice(0, -1);
+}// function
+
+// Resets focus to the input field
+function resetFocus(){
+  document.getElementById("word-input").focus();
+}// function
+
 // Event listener for hex click
 document.querySelectorAll(".hex").forEach(hex =>{
   hex.addEventListener("click", () => {
@@ -108,18 +120,32 @@ document.querySelectorAll(".hex").forEach(hex =>{
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("word-input").focus(); // Initializes focus
   const wordInput = document.getElementById("word-input");
   const enterButton = document.getElementById("enter-button");
+  const deleteButton = document.getElementById("delete-button");
 
   wordInput.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
       event.preventDefault();
       enterButton.click();
-    }
+    } // if
   }); // event listener
 
   enterButton.addEventListener("click", function(event) {
     event.preventDefault();
     submitWord();
+    resetFocus();
+  }); // event listener
+
+  deleteButton.addEventListener("click", function(event){
+    event.preventDefault();
+    deleteInputEnd();
+    resetFocus()
+  }); // event listener
+
+  // Blur event ("user clicks away from input")
+  wordInput.addEventListener("blur", function() {
+    setTimeout(() => wordInput.focus(), 0);
   }); // event listener
 });
