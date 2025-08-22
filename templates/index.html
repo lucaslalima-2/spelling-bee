@@ -16,9 +16,12 @@
       <div id="left-column">
 
         <!-- Entry container -->
-        <form id="word-form" autocomplete="off">
-          <input type="text" name="word" id="word-input">
-        </form> <!-- word form -->
+        <!-- <form id="word-form" autocomplete="off"> -->
+          <!-- <input type="text" name="word" id="word-input"> -->
+        <!-- </form> -->
+
+        <!-- Visible styled display -->
+        <div id="word-display" contenteditable="true"></div>
 
         <!-- Honeycomb -->
         <div id="honeycomb"> 
@@ -73,6 +76,7 @@
       window.FLASK_DATA = {
         max_score : {{ max_score | tojson }},
         panagram: {{panagram | tojson }},
+        all_letters: {{all_letters | tojson}},
         center_letter: {{ center_letter | tojson }},
         ring_letters: {{ ring_letters | tojson }}
       };

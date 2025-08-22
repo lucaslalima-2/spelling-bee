@@ -124,13 +124,20 @@ body {
   gap: 5px;
 }
 
-#word-input {
+#word-display {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-items: center;
   border: none;
   outline: none;
   background: transparent;
-  text-align: center;
   font-size: 18px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   width: 100%;
+  min-height: 40px;
+  color: black;
+  white-space: nowrap;
 }
 
 @media (max-width: 500px) {
