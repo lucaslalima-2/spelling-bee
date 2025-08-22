@@ -8,7 +8,7 @@ class Session:
     self.answers = []
     self.center_letter = None
     self.dictionary = None
-    self.letters = None
+    self.all_letters = None
     self.max_score = None
     self.panagram = None
     self.ring_letters = None
@@ -19,8 +19,8 @@ class Session:
     """ Sets session variables from panagram """
     self.panagram = panagram.upper()
     self.center_letter = letter.upper()
-    self.letters = set([x.upper() for x in panagram])
-    self.ring_letters = [x for x in list(self.letters) if x!=self.center_letter]
+    self.all_letters = list(set([x.upper() for x in panagram]))
+    self.ring_letters = [x for x in self.all_letters if x!=self.center_letter]
     self.answers = self.get_answers_list()
     return
 
@@ -29,7 +29,7 @@ class Session:
     l = []
     for word in self.dictionary.keys():
       if self.center_letter in word:
-        if set(word).issubset(self.letters):
+        if set(word).issubset(set(self.all_letters)):
           l.append(word)
     return l
 

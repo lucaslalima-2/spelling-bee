@@ -9,16 +9,19 @@
     <h1>Spelling Bee</h1>
 
     <!-- Panagram (for debug purposes)-->
-    <p class="panagram">Today's Panagram: {{panagram}}</p>
+    <!-- <p class="panagram">Today's Panagram: {{panagram}}</p> -->
 
     <div id="game-layout">
       <!-- Honeycomb letters and entry field -->
       <div id="left-column">
 
         <!-- Entry container -->
-        <form id="word-form" autocomplete="off">
-          <input type="text" name="word" id="word-input" placeholder="Enter a word">
-        </form> <!-- word form -->
+        <!-- <form id="word-form" autocomplete="off"> -->
+          <!-- <input type="text" name="word" id="word-input"> -->
+        <!-- </form> -->
+
+        <!-- Visible styled display -->
+        <div id="word-display" contenteditable="true" spellcheck="false"></div>
 
         <!-- Honeycomb -->
         <div id="honeycomb"> 
@@ -73,6 +76,7 @@
       window.FLASK_DATA = {
         max_score : {{ max_score | tojson }},
         panagram: {{panagram | tojson }},
+        all_letters: {{all_letters | tojson}},
         center_letter: {{ center_letter | tojson }},
         ring_letters: {{ ring_letters | tojson }}
       };

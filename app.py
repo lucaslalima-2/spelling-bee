@@ -23,10 +23,11 @@ app = Flask(__name__)
 def index():
   if request.method=="POST": pass #handles form submission or AJAX 
   return render_template("index.html",
-  panagram=session.panagram, 
-  center_letter=session.center_letter,
-  ring_letters=session.ring_letters,
-  max_score=session.max_score
+    panagram=session.panagram,
+    all_letters=session.all_letters,
+    center_letter=session.center_letter,
+    ring_letters=session.ring_letters,
+    max_score=session.max_score
   )
 
 """ Define behavior on submit-word """
