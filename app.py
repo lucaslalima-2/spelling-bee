@@ -22,13 +22,17 @@ app = Flask(__name__)
 @app.route("/")
 def index():
   if request.method=="POST": pass #handles form submission or AJAX 
-  return render_template("index.html",
+  print("Spelling Bee -> app.py: Rendering index.html")
+  x = render_template("index.html",
     panagram=session.panagram,
     all_letters=session.all_letters,
     center_letter=session.center_letter,
     ring_letters=session.ring_letters,
     max_score=session.max_score
   )
+
+  print(x)
+  return x 
 
 """ Define behavior on submit-word """
 @app.route("/submit_answer", methods=["POST"])
@@ -44,11 +48,9 @@ def submit_answer():
 
 """ Helps automatically open browser """
 def open_browser():
-  # system = "mac" if os.name=="posix" else "windows"
-  system = "windows"
+  system = "mac" if os.name=="posix" else "windows"
   browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
   browser.open_new("http://127.0.0.1:5000/")
-  #webbrowser.open_new_tab("http://127.0.0.1:5000/")
   return
 
 """ Anchor """
@@ -74,4 +76,3 @@ if __name__ == "__main__":
   # App running
   threading.Timer(1.0, open_browser).start()
   app.run(debug=True, use_reloader=False)
-  exit()
