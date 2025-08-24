@@ -45,8 +45,14 @@ def submit_answer():
 """ Helps automatically open browser """
 def open_browser():
   system = "mac" if os.name=="posix" else "windows"
-  browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
-  browser.open_new("http://127.0.0.1:5000/")
+  url = "http://127.0.0.1:5000/"
+  try:
+    if system=="windows": browser = webbrowser.get("firefox") 
+    if system=="mac": webbrowser.get("chrome")
+    browser.open_new(url)
+  except Exception:
+    if system=="windows": os.system(f"open -a 'Firefox' {url}")
+    if system=="mac": os.system(f"open -a 'Google Chrome' {url}")
   return
 
 """ Anchor """
