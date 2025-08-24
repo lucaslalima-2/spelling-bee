@@ -4,6 +4,10 @@ body {
   padding: 0px;
 }
 
+h1 {
+  text-align: center;
+}
+
 #game-layout {
   display: flex;
   justify-content: space-between;
@@ -178,7 +182,7 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  .hex {
-    margin: 5px;
+  .col-1, .col-3 {
+    margin-top: 0px;
   }
 }
