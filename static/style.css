@@ -1,14 +1,8 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
-  /* overflow: hidden; */
   padding: 0px;
 }
-
-/* For webkit browsers (Chrome, Safari)
-body::-webkit-scrollbar {
-  display: none;
-} */
 
 #game-layout {
   display: flex;
@@ -26,7 +20,6 @@ body::-webkit-scrollbar {
   display: flex;
   flex-direction: column;
   align-items: center; /* Centers children horizontally */
-  border-right: 2px solid #ccc;
   padding-right: 20px;
 }
 

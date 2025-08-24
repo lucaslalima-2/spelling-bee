@@ -22,17 +22,13 @@ app = Flask(__name__)
 @app.route("/")
 def index():
   if request.method=="POST": pass #handles form submission or AJAX 
-  print("Spelling Bee -> app.py: Rendering index.html")
-  x = render_template("index.html",
+  return render_template("index.html",
     panagram=session.panagram,
     all_letters=session.all_letters,
     center_letter=session.center_letter,
     ring_letters=session.ring_letters,
     max_score=session.max_score
   )
-
-  print(x)
-  return x 
 
 """ Define behavior on submit-word """
 @app.route("/submit_answer", methods=["POST"])
