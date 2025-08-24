@@ -37,6 +37,7 @@ function submitWord() {
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
+        showPopUp(word, data["value"]);
         updateScore(data["value"]);
         updateWordList(word);
         updateRank();
@@ -45,6 +46,13 @@ function submitWord() {
   });//then data
 } //function
 
+// Function shows popup
+function showPopUp(word, value){
+  const popup = document.getElementById('popup');
+  popup.textContent = `${word} +${value}`;
+  popup.classList.add('show');
+  setTimeout(() => popup.classList.remove('show'), 1000);
+}
 // Function updates score 
 function updateScore(value){
   score += value;
