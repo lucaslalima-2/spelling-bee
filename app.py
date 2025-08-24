@@ -44,11 +44,9 @@ def submit_answer():
 
 """ Helps automatically open browser """
 def open_browser():
-  # system = "mac" if os.name=="posix" else "windows"
-  system = "windows"
+  system = "mac" if os.name=="posix" else "windows"
   browser = webbrowser.get("firefox") if system=="windows" else webbrowser.get("chrome")
   browser.open_new("http://127.0.0.1:5000/")
-  #webbrowser.open_new_tab("http://127.0.0.1:5000/")
   return
 
 """ Anchor """
@@ -74,4 +72,3 @@ if __name__ == "__main__":
   # App running
   threading.Timer(1.0, open_browser).start()
   app.run(debug=True, use_reloader=False)
-  exit()
