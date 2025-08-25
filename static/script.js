@@ -106,18 +106,13 @@ function updateWordList(word){
   word_bank.add(word);
   let sorted_words = Array.from(word_bank).sort();
 
-  // Clears word list
-  // -- word-list approach
-  // let word_list = document.getElementById("word-list");
-  // word_list.innerHTML = ''; // Clear current list
-
-  // word-column approach
+  // Resets word columns
   for (let i = 1; i <= 3; i++) {
     document.getElementById(`column-${i}`).innerHTML = '';
   } // for
 
    // Calculate how many words per column (top-down fill)
-  const max_per_column = 20;
+  const max_per_column = 14;
 
   // Posts all words from word_bank
   sorted_words.forEach( (word, index) => {
