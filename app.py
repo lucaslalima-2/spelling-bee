@@ -2,7 +2,7 @@
 
 # GUI Libraries
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-import threading, webbrowser, os
+import threading, webbrowser, os, platform
 
 # Python Libraries
 import argparse
@@ -44,15 +44,21 @@ def submit_answer():
 
 """ Helps automatically open browser """
 def open_browser():
-  system = "mac" if os.name=="posix" else "windows"
+  system = platform.system().lower()
   url = "http://127.0.0.1:5000/"
   try:
-    if system=="windows": browser = webbrowser.get("firefox") 
-    if system=="mac": webbrowser.get("chrome")
+    webbrowser.get()
     browser.open_new(url)
   except Exception:
-    if system=="windows": os.system(f"open -a 'Firefox' {url}")
-    if system=="mac": os.system(f"open -a 'Google Chrome' {url}")
+    # Fallback for macOS
+    if system == "darwin":
+        os.system(f"open -a 'Google Chrome' {url}")
+    # Fallback for Windows
+    elif system == "windows":
+        os.system(f'start chrome "{url}"')
+    # Optional: Fallback for Linux
+    elif system == "linux":
+        os.system(f'xdg-open "{url}"')
   return
 
 """ Anchor """
@@ -77,4 +83,4 @@ if __name__ == "__main__":
 
   # App running
   threading.Timer(1.0, open_browser).start()
-  app.run(debug=True, use_reloader=False)
+  app.run(debug=True, use_reloader=False, port=5050)
