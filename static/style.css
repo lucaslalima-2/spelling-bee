@@ -33,27 +33,42 @@ body {
 }
 
 #popup-container {
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
-#popup {
-  background: var(--center-color, #f3d043);
+  align-items: center;
+  background: transparent;
   border-radius: 5px;
+  display: flex;
+  flex-direction: row;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 9px;
-  font-weight: bold;
+  gap: 3px;
   opacity: 0.0;
   padding: 3px 5px 3px 5px;
-  text-transform: uppercase;
   transition: opacity 0.4s;
 }
 
-#popup.show {
+#popup-container.show {
   opacity: 1;
+}
+
+#popup-compliment {
+  border: 2px; 
+  border-radius: 8px;
+  background-color: var(--center-color, #f3d043);
+  display: inline-block;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  padding: 2px 4px 2px 4px;
+  transition: opacity 0.4s;
+  vertical-align: middle;
+}
+
+#popup-value {
+  color: black;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1em;
+  transition: opacity 0.4s;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 #honeycomb {
