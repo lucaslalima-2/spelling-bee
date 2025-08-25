@@ -1,9 +1,27 @@
 // Variables
 "use strict";
-const center_letter = window.FLASK_DATA.center_letter;
 const all_letters = window.FLASK_DATA.all_letters;
-let ring_letters = window.FLASK_DATA.ring_letters;
+const center_letter = window.FLASK_DATA.center_letter;
+const compliments = {
+  1 : "Good!",
+  5 : "Nice!",
+  6 : "Great!",
+  7: "Awesome!",
+  8: "Amazing!",
+  10: "Incredible!",
+  11: "Unbelievable!",
+  12: "Genius!",
+  13: "Magnificent!",
+  14: "Spectacular!",
+  15: "Phenomenal!",
+  16: "Astounding!",
+  17: "Extraordinary!",
+  18: "Brilliant!",
+  19: "Fabulous!",
+  20: "Fantastic!",
+}
 const max_score = window.FLASK_DATA.max_score;
+let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
 const percentages = [
   [0.00, "Good Start"],
@@ -48,11 +66,35 @@ function submitWord() {
 
 // Function shows popup
 function showPopUp(word, value){
-  const popup = document.getElementById('popup');
-  popup.textContent = `${word} +${value}`;
+  const popup_comp = document.getElementById('popup-compliment');
+  const popup_val = document.getElementById('popup-value');
+
+  // Determines compliment and value
+  let ispanagram = all_letters.every(letter => word.includes(letter));
+  let compliment = "";
+  if(ispanagram) {
+    value = value + 7; // Panagram bonus
+    compliment = "Panagram!";
+  } else {
+    compliment = compliments[value]
+  }  // if-else
+
+  // Sets popup text
+  popup_comp.textContent = compliment;
+  popup_val.textContent = `+${value}`;
+
+  // Adds popup animatinon
+  const popup = document.getElementById('popup-container');
   popup.classList.add('show');
-  setTimeout(() => popup.classList.remove('show'), 1000);
-}
+
+  // Removes popup animation
+  [popup_comp, popup_val].forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetWidth; // force reflow to restart animation
+    el.style.animation = '';
+  });
+} // function
+
 // Function updates score 
 function updateScore(value){
   score += value;
