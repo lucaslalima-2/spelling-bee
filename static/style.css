@@ -32,7 +32,6 @@ body {
   padding-left: 20px;
 }
 
-/* start */
 #popup-container,
 #popup-compliment,
 #popup-value {
@@ -40,8 +39,9 @@ body {
 }
 
 #popup-container {
-  display: flex;
   align-items: center;
+  color: black;
+  display: flex;
   gap: 3px;
   padding: 3px 5px;
   border-radius: 5px;
@@ -58,21 +58,15 @@ body {
 #popup-compliment,
 #popup-value {
   display: inline-block;
-  font-size: 12px;
   vertical-align: middle;
   transition: opacity 0.4s;
-  animation: fadeUp 0.8s ease-in-out forwards;
+  animation: fadeUp 2s ease-in-out forwards;
 }
 
 #popup-compliment {
-  border: 2px solid transparent; /* Specify style to make it valid */
-  border-radius: 8px;
-  background-color: var(--center-color, #f3d043);
-  padding: 2px 4px;
-}
-
-#popup-value {
-  color: black;
+  border: 1px solid rgb(223, 217, 217); /* Specify style to make it valid */
+  background-color: transparent;
+  padding: 5px 6px;
 }
 
 @keyframes fadeUp {
