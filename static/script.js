@@ -105,13 +105,26 @@ function updateScore(value){
 function updateWordList(word){
   word_bank.add(word);
   let sorted_words = Array.from(word_bank).sort();
+
+  // Clears previous word list
   let word_list = document.getElementById("word-list");
-  word_list.innerHTML = ''; // Clear current list
-  let post_string = '';
-  for( let word of sorted_words){
-    post_string += word + '\n';
-  }//for
-  word_list.innerHTML = post_string;
+  word_list.innerHTML = '';
+
+  // Builds new word list
+  for (let word of sorted_words) {
+    let word_element = document.createElement("div");
+    word_element.className = "underlined-word";
+    word_element.textContent = word;
+    word_list.appendChild(word_element);
+  }
+
+  // Update header message
+  let word_message = document.getElementById("word-message");
+  if(sorted_words.length == 1){
+    word_message.innerText = `You have found ${sorted_words.length} word`;
+  } else {
+    word_message.innerText = `You have found ${sorted_words.length} words`;
+  } // if-else
 }// function
 
 // Function updates rank
