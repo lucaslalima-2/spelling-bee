@@ -88,7 +88,11 @@ function showPopUp(word, value){
   popup.classList.add('show');
 
   // Removes popup animation
-  setTimeout(() => { popup.classList.remove('show') }, 800);
+  [popup_comp, popup_val].forEach(el => {
+    el.style.animation = 'none';
+    void el.offsetWidth; // force reflow to restart animation
+    el.style.animation = '';
+  });
 } // function
 
 // Function updates score 
