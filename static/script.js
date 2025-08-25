@@ -20,18 +20,20 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
-const max_score = window.FLASK_DATA.max_score;
+const max_per_column = 14; // max words per column in found section
+// const max_score = window.FLASK_DATA.max_score;
+const max_score = 100; // for debug
 let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
 const percentages = [
   [0.00, "Good Start"],
-  [0.15, "Moving Up"],
-  [0.25, "Good"],
-  [0.40, "Solid"],
-  [0.50, "Nice"],
-  [0.75, "Great"],
-  [0.90, "Amazing"],
-  [1.00, "Genius"]
+  [0.05, "Moving Up"],
+  [0.10, "Good"],
+  [0.15, "Solid"],
+  [0.20, "Nice"],
+  [0.25, "Great"],
+  [0.30, "Amazing"],
+  [0.35, "Genius"]
 ]
 let score = 0;
 let word_bank = new Set();
@@ -111,9 +113,6 @@ function updateWordList(word){
     document.getElementById(`column-${i}`).innerHTML = '';
   } // for
 
-   // Calculate how many words per column (top-down fill)
-  const max_per_column = 14;
-
   // Posts all words from word_bank
   sorted_words.forEach( (word, index) => {
     const colindex = Math.floor(index / max_per_column) + 1;
@@ -138,20 +137,21 @@ function updateRank(){
   let rank_status = document.getElementById("rank-status");
   
   // const rank_string = percentages.reduce((acc, p) =>
-  // acc + (score / max_score > p[0] ? '●' : '○'), '');
-  let rank_string = "";
-  let rank = "";
+  let temp_stars = "";
+  let temp_status = "";
+
+  console.log("Percentage: ", score/max_score);
+
   for(let i=0; i<percentages.length; i++){
     if(score/max_score > percentages[i][0]){
-      rank_string += '●';
-      rank = percentages[i][1]
+      temp_stars += '●';
+      temp_status = percentages[i][1]
     } else {
-      rank_string += '○';
+      temp_stars += '○';
     }// if-else
   }// for
-  rank_status.textContent = rank;
-  rank_stars.textContent = rank_string;
-  // rank_stars.style.fontFamily = 'monospace';
+  rank_stars.textContent = temp_stars;
+  rank_status.textContent = temp_status;
 }// function 
 
 // Function clears answer input field on Enter click

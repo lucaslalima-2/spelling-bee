@@ -204,6 +204,14 @@ body {
   width: 100%;
 }
 
+/* Right-column */
+
+#rank-container {
+  display: flex;
+  align-items: center; /* vertically aligns the text */
+  gap: 8px; /* optional spacing between the two items */
+}
+
 #word-list-container {
   border: 1px solid rgb(214, 214, 214);
   height: 400px;
