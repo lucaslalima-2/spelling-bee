@@ -106,19 +106,29 @@ function updateWordList(word){
   word_bank.add(word);
   let sorted_words = Array.from(word_bank).sort();
 
-  // Clears previous word list
-  let word_list = document.getElementById("word-list");
-  word_list.innerHTML = '';
+  // Clears word list
+  // -- word-list approach
+  // let word_list = document.getElementById("word-list");
+  // word_list.innerHTML = ''; // Clear current list
 
-  // Builds new word list
-  for (let word of sorted_words) {
-    let word_element = document.createElement("div");
+  // word-column approach
+  for (let i = 1; i <= 3; i++) {
+    document.getElementById(`column-${i}`).innerHTML = '';
+  } // for
+
+   // Calculate how many words per column (top-down fill)
+  const max_per_column = 20;
+
+  // Posts all words from word_bank
+  sorted_words.forEach( (word, index) => {
+    const colindex = Math.floor(index / max_per_column) + 1;
+    const word_element = document.createElement("div");
     word_element.className = "underlined-word";
-    word_element.textContent = word;
-    word_list.appendChild(word_element);
-  }
+    word_element.textContent = setTitleCase(word);
+    document.getElementById(`column-${colindex}`).appendChild(word_element);
+  });
 
-  // Update header message
+  // Update header message (ie. "You have found x words")
   let word_message = document.getElementById("word-message");
   if(sorted_words.length == 1){
     word_message.innerText = `You have found ${sorted_words.length} word`;
@@ -240,6 +250,11 @@ function resetFocus(){
   sel.removeAllRanges();
   sel.addRange(range);
 }// function
+
+// Convert string to title case for posting to word_list
+function setTitleCase(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+} // function
 
 // Event listener for hex click
 document.querySelectorAll(".hex").forEach(hex =>{
