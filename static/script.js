@@ -20,18 +20,21 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
-const max_score = window.FLASK_DATA.max_score;
+const max_per_column = 14; // max words per column in found section
+// const max_score = window.FLASK_DATA.max_score;
+const max_score = 100; // for debug
 let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
 const percentages = [
-  [0.00, "Good Start"],
-  [0.15, "Moving Up"],
-  [0.25, "Good"],
-  [0.40, "Solid"],
-  [0.50, "Nice"],
-  [0.75, "Great"],
-  [0.90, "Amazing"],
-  [1.00, "Genius"]
+  [0.00, "Beginner"],
+  [0.01, "Good Start"],
+  [0.10, "Moving Up"],
+  [0.15, "Good"],
+  [0.20, "Solid"],
+  [0.25, "Nice"],
+  [0.30, "Great"],
+  [0.35, "Amazing"],
+  [0.40, "Genius"]
 ]
 let score = 0;
 let word_bank = new Set();
@@ -98,7 +101,7 @@ function showPopUp(word, value){
 // Function updates score 
 function updateScore(value){
   score += value;
-  document.getElementById("score").textContent = score;
+  document.querySelector("#rank-score").textContent = score;
 } // function
 
 // Function updates wordlist
@@ -107,16 +110,13 @@ function updateWordList(word){
   let sorted_words = Array.from(word_bank).sort();
 
   // Resets word columns
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 0; i <= 2; i++) {
     document.getElementById(`column-${i}`).innerHTML = '';
   } // for
 
-   // Calculate how many words per column (top-down fill)
-  const max_per_column = 14;
-
   // Posts all words from word_bank
   sorted_words.forEach( (word, index) => {
-    const colindex = Math.floor(index / max_per_column) + 1;
+    const colindex = Math.floor(index / max_per_column);
     const word_element = document.createElement("div");
     word_element.className = "underlined-word";
     word_element.textContent = setTitleCase(word);
@@ -134,24 +134,23 @@ function updateWordList(word){
 
 // Function updates rank
 function updateRank(){
-  let rank_stars = document.getElementById("rank-stars");
   let rank_status = document.getElementById("rank-status");
+  let rank_index = 0;
+  let rank_pointer = document.querySelector(".rank-pointer");
+  const nodes = document.querySelectorAll(".rank-node");
   
-  // const rank_string = percentages.reduce((acc, p) =>
-  // acc + (score / max_score > p[0] ? '●' : '○'), '');
-  let rank_string = "";
-  let rank = "";
+  // Iterates over thresholds and sets rank
   for(let i=0; i<percentages.length; i++){
     if(score/max_score > percentages[i][0]){
-      rank_string += '●';
-      rank = percentages[i][1]
-    } else {
-      rank_string += '○';
-    }// if-else
+      rank_status.textContent = percentages[i][1]
+      rank_index = i;
+    } // if
   }// for
-  rank_status.textContent = rank;
-  rank_stars.textContent = rank_string;
-  // rank_stars.style.fontFamily = 'monospace';
+
+  // Determines target node for positioning
+  let target_node = nodes[rank_index];
+  const left_offset = target_node.offsetLeft + target_node.offsetWidth/2 - rank_pointer.offsetWidth/2;
+  rank_pointer.style.left = `${left_offset}px`;
 }// function 
 
 // Function clears answer input field on Enter click
@@ -301,14 +300,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
 
-  // Initialize focus
-  resetFocus();
-
   // Initializes game
-  shuffleLetters();
-
-  // Adds color to text input
-  setInputStyle();
+  resetFocus(); // Initialize cursor focud
+  setInputStyle(); // Sets entry field style
+  shuffleLetters(); // Sets ring_letter configuration
+  updateRank();
 
   // Blur event ("user clicks away from input")
   word_display.addEventListener("blur", function() {

@@ -8,73 +8,83 @@
     <!-- Header -->
     <h1 id="title">Spelling Bee</h1>
 
-    <!-- Panagram (for debug purposes)-->
-    <!-- <p class="panagram">Today's Panagram: {{panagram}}</p> -->
+    <div id="game-container">
+      <div id="game-layout">
+        <!-- Left Column -->
+        <div id="left-column">
 
-    <div id="game-layout">
-      <!-- Honeycomb letters and entry field -->
-      <div id="left-column">
-
-        <!-- Correct submission pop-up animation -->
-        <div id="popup-container">
-          <div id="popup-compliment">&#8203;</div>
-          <div id="popup-value">+1</div>
-        </div>
-
-        <!-- Visible styled display -->
-        <div id="word-display" contenteditable="true" spellcheck="false"></div>
-
-        <!-- Honeycomb -->
-        <div id="honeycomb"> 
-          <div class="column col-1">
-            <div class="hex" id="hex-5"><span class="hex-letter"></span></div>
-            <div class="hex" id="hex-4"><span class="hex-letter"></span></div>
+          <!-- Correct submission pop-up animation -->
+          <div id="popup-container">
+            <div id="popup-compliment">&#8203;</div>
+            <div id="popup-value">+1</div>
           </div>
-          <div class="column col-2">
-            <div class="hex" id="hex-0"><span class="hex-letter"></span></div>
-            <div class="hex center" id="hex-center"><span class="hex-letter"></span></div>
-            <div class="hex" id="hex-3"><span class="hex-letter"></span></div>
+
+          <!-- Visible styled display -->
+          <div id="word-display" contenteditable="true" spellcheck="false"></div>
+
+          <!-- Honeycomb -->
+          <div id="honeycomb"> 
+            <div class="column col-1">
+              <div class="hex" id="hex-5"><span class="hex-letter"></span></div>
+              <div class="hex" id="hex-4"><span class="hex-letter"></span></div>
+            </div>
+            <div class="column col-2">
+              <div class="hex" id="hex-0"><span class="hex-letter"></span></div>
+              <div class="hex center" id="hex-center"><span class="hex-letter"></span></div>
+              <div class="hex" id="hex-3"><span class="hex-letter"></span></div>
+            </div>
+              <div class="column col-3">
+              <div class="hex" id="hex-1"><span class="hex-letter"></span></div>
+              <div class="hex" id="hex-2"><span class="hex-letter"></span></div>
+            </div>
           </div>
-            <div class="column col-3">
-            <div class="hex" id="hex-1"><span class="hex-letter"></span></div>
-            <div class="hex" id="hex-2"><span class="hex-letter"></span></div>
-          </div>
-        </div>
 
-        <!-- Buttons -->
-        <div id="button-panel">
-          <button id="delete-button">Delete</button>
-          <button id="shuffle-button">Shuffle</button>
-          <button id="enter-button" type="submit">Enter</button>
-        </div>
-      </div>
-
-      <!-- Rank status and word bank -->
-      <div id="right-column">
-
-        <!-- Rank section -->
-        <div id="rank-container">
-          <p id="rank-status">Good Start:</p>
-          <p id="rank-stars">○○○○○○○</p>
-        </div> <!-- rank container -->
-
-        <!-- Score Container -->
-        <div id="score-container">
-          <h3>Score: <span id="score">0</span></h3>
-        </div> <!-- score container -->
-
-        <!-- Container section  -->
-        <div id="word-list-container">
-          <div id="word-message">You have found 0 words</div>
-          <div id="word-columns">
-            <div class="word-column" id="column-1"></div>
-            <div class="word-column" id="column-2"></div>
-            <div class="word-column" id="column-3"></div>
+          <!-- Buttons -->
+          <div id="button-panel">
+            <button id="delete-button">Delete</button>
+            <button id="shuffle-button">Shuffle</button>
+            <button id="enter-button" type="submit">Enter</button>
           </div>
         </div>
 
-       </div> <!-- right column -->
-    </div> <!-- game layout -->    
+        <!-- Rank status and word bank -->
+        <div id="right-column">
+
+          <!-- Rank section -->
+          <div id="rank-container">
+            <p id="rank-status">Beginner</p>
+            <div id="rank-track">
+              <div class="rank-node" data-index="0"></div>
+              <div class="rank-node" data-index="1"></div>
+              <div class="rank-node" data-index="2"></div>
+              <div class="rank-node" data-index="3"></div>
+              <div class="rank-node" data-index="4"></div>
+              <div class="rank-node" data-index="5"></div>
+              <div class="rank-node" data-index="6"></div>
+              <div class="rank-node" data-index="7"></div>
+              <div class="rank-node"  data-index="8"></div>
+              <div class="rank-pointer"><span id="rank-score">0</span></div>
+            </div>
+          </div> <!-- rank container -->
+
+          <!-- Score Container -->
+          <div id="score-container">
+            <h3>Score: <span id="score">0</span></h3>
+          </div> <!-- score container -->
+
+          <!-- Container section  -->
+          <div id="word-list-container">
+            <div id="word-message">You have found 0 words</div>
+            <div id="word-columns">
+              <div class="word-column" id="column-0"></div>
+              <div class="word-column" id="column-1"></div>
+              <div class="word-column" id="column-2"></div>
+            </div>
+          </div>
+
+        </div> <!-- right column -->
+      </div> <!-- game layout -->
+    </div> <!-- game container-->
 
     <!-- Inline script: define the variable -->
     <script>
