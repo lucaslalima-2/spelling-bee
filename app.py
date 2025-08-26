@@ -83,4 +83,4 @@ if __name__ == "__main__":
 
   # App running
   threading.Timer(1.0, open_browser).start()
-  app.run(debug=True, use_reloader=False, port=5050)
+  app.run(debug=True, use_reloader=False, port=5000)
