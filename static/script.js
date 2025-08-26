@@ -136,7 +136,7 @@ function updateWordList(word){
 function updateRank(){
   let rank_status = document.getElementById("rank-status");
   let rank_index = 0;
-  let rank_indicator = document.querySelector(".rank-indicator");
+  let rank_pointer = document.querySelector(".rank-pointer");
   const nodes = document.querySelectorAll(".rank-node");
   
   // Iterates over thresholds and sets rank
@@ -149,8 +149,8 @@ function updateRank(){
 
   // Determines target node for positioning
   let target_node = nodes[rank_index];
-  const left_offset = target_node.offsetLeft + target_node.offsetWidth/2 - rank_indicator.offsetWidth/2;
-  rank_indicator.style.left = `${left_offset}px`;
+  const left_offset = target_node.offsetLeft + target_node.offsetWidth/2 - rank_pointer.offsetWidth/2;
+  rank_pointer.style.left = `${left_offset}px`;
 }// function 
 
 // Function clears answer input field on Enter click
