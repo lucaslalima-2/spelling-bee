@@ -255,7 +255,7 @@ body {
 
 .rank-pointer {
   position: absolute;
-  /* top: -10px; */
+  left: -5px; /* Helps set initial pos of pointer */
   width: 20px;
   height: 20px;
   background-color: #ffcc00;

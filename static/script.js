@@ -300,15 +300,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
 
-  // Initialize focus
-  resetFocus();
-
   // Initializes game
-  shuffleLetters();
+  resetFocus(); // Initialize cursor focud
+  setInputStyle(); // Sets entry field style
+  shuffleLetters(); // Sets ring_letter configuration
   updateRank();
-
-  // Adds color to text input
-  setInputStyle();
 
   // Blur event ("user clicks away from input")
   word_display.addEventListener("blur", function() {
