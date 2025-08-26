@@ -3,8 +3,9 @@ body {
 }
 
 :root {
-  --highlight: #ffcc00;
   --border-light: rgb(214, 214, 214);
+  --highlight: #ffcc00;
+  --node-color: #ccc;
   --word-list-border: rgb(211, 211, 211);
 }
 
@@ -235,8 +236,20 @@ body {
   position: relative;
 }
 
+#rank-track::before {
+  background-color: var(--node-color);
+  content: "";
+  height: 1px; /* thickness */
+  left: 0;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); /* vertically center the line */
+  width: 100%;
+  z-index: 0; /* tuck behind */
+}
+
 .rank-node {
-  background-color: #ccc;
+  background-color: var(--node-color);
   border-radius: 50%;
   height: 10px;
   position: relative;
@@ -326,7 +339,7 @@ body {
     flex-direction: column;
     align-items: center;
   }
-  
+
   .col-1, .col-3 {
     margin-top: 0;
   }
