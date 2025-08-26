@@ -26,18 +26,19 @@ body {
   padding: 20px;
   min-width: 320px; /* Mobile-friendly minimum width */
   max-width: 900px;
-  width: 650px;
+  width: 700px; /* helps right-col right-bounds to the right */
 }
 
 #left-column {
   display: flex;
   flex-direction: column;
   align-items: center; /* Centers children horizontally */
+  margin-left: 50px;
   max-width: 400px;
 }
 
 #right-column {
-  padding-left: 20px;
+  padding-left: 120px;
   margin-right: 50px;
   width: 70%;
 }
@@ -80,11 +81,28 @@ body {
   100% { opacity: 0; transform: translateY(-5px); }
 }
 
+#word-display {
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: black;
+  display: flex;
+  font-size: 18px;
+  font-weight: bold;
+  justify-content: center;
+  min-height: 40px;
+  margin-top: 10px;
+  text-align: center;
+  outline: none;
+  white-space: nowrap;
+  width: 100%;
+}
+
 #honeycomb {
   display: flex;
   justify-content: center;
   gap: 0px;
-  margin: 0 0;
+  margin-top: 10px;
   width: 100%;
   max-width: 500px;
 }
@@ -101,7 +119,7 @@ body {
 
 .col-1 .hex,
 .col-3 .hex {
-  margin-top: -3px;
+  margin-top: 0px;
 }
 
 .col-2 {
@@ -115,8 +133,8 @@ body {
 }
 
 .hex {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   background: #ece9e9;
   clip-path: polygon(
     50% 0%, 93% 25%, 93% 75%,
@@ -188,22 +206,6 @@ body {
   display: flex;
   align-items: center;
   gap: 5px;
-}
-
-#word-display {
-  align-items: center;
-  background: transparent;
-  border: none;
-  color: black;
-  display: flex;
-  font-size: 18px;
-  font-weight: bold;
-  justify-content: center;
-  min-height: 40px;
-  text-align: center;
-  outline: none;
-  white-space: nowrap;
-  width: 100%;
 }
 
 /* Right-column */
@@ -320,11 +322,12 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
   #game-layout {
     align-items: center;
     flex-direction: column;
     max-width: none;
+    margin-right: 70px;
     min-width: unset;
     width: 100%;
   }
@@ -335,11 +338,13 @@ body {
   }
 
   #honeycomb {
-    flex-direction: row;
     align-items: center;
+    flex-direction: row;
     justify-content: center;
-    width: 210px;
+    margin-top: 25px 
     max-width: 100vw;
+    width: 210px;
+
   }
 
   .column {
