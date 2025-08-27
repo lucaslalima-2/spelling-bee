@@ -53,13 +53,13 @@ function submitWord() {
   })// fetch
   .then(response => response.json())
   .then(data =>{
-    // console.log("Server response: ", data)
 
-    clearWord() // clears word
+    clearWord(); // clears word
+
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
-        showPopUp(word, data["value"]);
+        showPopUp(word, data["value"], data["panagram"]);
         updateScore(data["value"]);
         updateWordList(word);
         updateRank();
@@ -69,18 +69,19 @@ function submitWord() {
 } //function
 
 // Function shows popup
-function showPopUp(word, value){
+function showPopUp(word, value, ispanagram){
   const popup_comp = document.getElementById('popup-compliment');
   const popup_val = document.getElementById('popup-value');
 
   // Determines compliment and value
-  let ispanagram = all_letters.every(letter => word.includes(letter));
   let compliment = "";
   if(ispanagram) {
     value = value + 7; // Panagram bonus
     compliment = "Panagram!";
+    popup_comp.classList.add("panagram");
   } else {
     compliment = compliments[value]
+    popup_comp.classList.remove("panagram");
   }  // if-else
 
   // Sets popup text
@@ -88,15 +89,15 @@ function showPopUp(word, value){
   popup_val.textContent = `+${value}`;
 
   // Adds popup animatinon
-  const popup = document.getElementById('popup-container');
-  popup.classList.add('show');
+  const popup_container = document.getElementById('popup-container');
+  popup_container.classList.add('show');
 
   // Removes popup animation
   [popup_comp, popup_val].forEach(el => {
     el.style.animation = 'none';
     void el.offsetWidth; // force reflow to restart animation
     el.style.animation = '';
-  });
+  }); //forEach
 } // function
 
 // Function updates score 

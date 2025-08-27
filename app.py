@@ -38,7 +38,9 @@ def submit_answer():
 
   if word in session.answers:
     value = session.dictionary[word]
-    return jsonify({"status": "success", "word": word, "value": value})
+    panagram = check_panagram(word)
+    print(f"Word: {word}, panagram: {session.panagram}, val: {panagram}")
+    return jsonify({"status": "success", "word": word, "value": value, "panagram": panagram})
   else:
     return jsonify({"status": "fail", "word": word})
 
@@ -72,12 +74,12 @@ if __name__ == "__main__":
   center_letter = vars(args)["letter"]
 
   # Checks panagram
-  proceed = check_panagram(panagram)
-  if not proceed: print("Spelling Bee -> app.py: Invalid panagram."); exit()
-  else: print(f"Spelling Bee: Panagram approved={panagram}. Happy spelling!")
+  if not check_panagram(panagram): print("Spelling Bee -> app.py: Invalid panagram."); exit()
+  else: print(f"Spelling Bee: Panagram approved={panagram}.")
 
   # Stores session
   session.dictionary = load_dictionary()
+  if panagram.upper() not in session.dictionary: print("Spelling Bee -> app.py: Not in dictionary."); exit()
   session.set_panagram(panagram, center_letter)
   session.max_score = get_max_score()
 
