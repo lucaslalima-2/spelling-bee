@@ -23,6 +23,7 @@ const compliments = {
 const max_per_column = 14; // max words per column in found section
 // const max_score = window.FLASK_DATA.max_score;
 const max_score = 100; // for debug
+let rank_index = 0; // for rank_pointer setting
 let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
 const percentages = [
@@ -135,9 +136,8 @@ function updateWordList(word){
 // Function updates rank
 function updateRank(){
   let rank_status = document.getElementById("rank-status");
-  let rank_index = 0;
   let rank_pointer = document.querySelector(".rank-pointer");
-  const nodes = document.querySelectorAll(".rank-node");
+  // const nodes = document.querySelectorAll(".rank-node");
   
   // Iterates over thresholds and sets rank
   for(let i=0; i<percentages.length; i++){
@@ -147,11 +147,23 @@ function updateRank(){
     } // if
   }// for
 
+  rank_pointer.classList.add("animate"); // enables glide
+  setRankPointer(rank_index);
+}// function
+
+// Positions rank_pointer
+function setRankPointer(rank_index) {
+  const rank_pointer = document.querySelector(".rank-pointer");
+  const nodes = document.querySelectorAll(".rank-node");
+  const track = document.getElementById("rank-track");
+
   // Determines target node for positioning
-  let target_node = nodes[rank_index];
-  const left_offset = target_node.offsetLeft + target_node.offsetWidth/2 - rank_pointer.offsetWidth/2;
+  const node_rect = nodes[rank_index].getBoundingClientRect();
+  const track_rect = track.getBoundingClientRect();
+  // const left_offset = target_node.offsetLeft + target_node.offsetWidth/2 - rank_pointer.offsetWidth/2;
+  const left_offset = node_rect.left - track_rect.left + (node_rect.width / 2) - (rank_pointer.offsetWidth / 2);
   rank_pointer.style.left = `${left_offset}px`;
-}// function 
+} // function
 
 // Function clears answer input field on Enter click
 function clearWord() {
@@ -250,22 +262,6 @@ function setTitleCase(str) {
   return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 } // function
 
-// Event listener for hex click
-document.querySelectorAll(".hex").forEach(hex =>{
-  hex.addEventListener("click", () => {
-    hex.addEventListener("mousedown", (e) => e.preventDefault());
-
-    const letter = hex.textContent;
-    const word_display = document.getElementById("word-display");
-    
-    word_display.textContent += letter;
-    resetFocus();
-    
-    hex.classList.add('clicked');
-    setTimeout(() => { hex.classList.remove("clicked");}, 200);
-  }); // addEventListener
-}) // forEach
-
 // Sets styling of input
 function setInputStyle() {
   const word_display = document.getElementById("word-display");
@@ -290,6 +286,29 @@ function setInputStyle() {
 
   }); // event listener
 }; // function
+
+// Event listener for hex click
+document.querySelectorAll(".hex").forEach(hex =>{
+  hex.addEventListener("click", () => {
+    hex.addEventListener("mousedown", (e) => e.preventDefault());
+
+    const letter = hex.textContent;
+    const word_display = document.getElementById("word-display");
+    
+    word_display.textContent += letter;
+    resetFocus();
+    
+    hex.classList.add('clicked');
+    setTimeout(() => { hex.classList.remove("clicked");}, 200);
+  }); // addEventListener
+}) // forEach
+
+// Event listener for resize window
+window.addEventListener("resize", () => {
+  const rank_pointer = document.querySelector(".rank-pointer");
+  rank_pointer.classList.remove("animate"); //disable glide
+  setRankPointer(rank_index); // or positionRankPointerAtIndex(rank_index)
+});
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {

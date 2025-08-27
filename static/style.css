@@ -280,6 +280,9 @@ body {
   font-size: 9px;
   font-weight: normal;
   z-index: 2;
+}
+
+.rank-pointer.animate {
   transition: left 0.3s ease;
 }
 
