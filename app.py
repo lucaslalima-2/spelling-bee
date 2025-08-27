@@ -42,7 +42,8 @@ def submit_answer():
     print(f"Word: {word}, panagram: {session.panagram}, val: {panagram}")
     return jsonify({"status": "success", "word": word, "value": value, "panagram": panagram})
   else:
-    return jsonify({"status": "fail", "word": word})
+    issubset = True if set(word).issubset(set(session.all_letters)) else False
+    return jsonify({"status": "fail", "word": word, "issubset": issubset})
 
 """ Helps automatically open browser """
 def open_browser():

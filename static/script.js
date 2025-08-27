@@ -69,10 +69,17 @@ function submitWord() {
     }; //if success
 
     // Wrong answer
-    console.log(data);
     if (data["status"]=="fail") {
-      clearWord();
-    } // 
+      if(data["word"].length < 4) {
+        showErrorPopUp("too_short");
+        setTimeout(clearWord, 1000); //delays clearWord()
+      } else if(!data["issubset"]) {
+        showErrorPopUp("bad_letters");
+        setTimeout(clearWord, 1000); //delays clearWord()
+      } else {
+        console.log("function submitWord-> Unaccounted for submission: ", data)
+      } // if subset
+    } // if data 
   });//if data
 
 } //function
