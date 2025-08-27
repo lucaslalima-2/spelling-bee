@@ -86,6 +86,21 @@ body {
   100% { opacity: 0; transform: translateY(-5px); }
 }
 
+#popup-error {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 10px;
+  text-align: center;
+  transition: opacity 0.4s;
+  animation: fadeUp 2s ease-in-out forwards;
+  width: fit-content;
+  max-width: 80%;
+  margin: 0 auto; /* centers horizontally */
+  display: none; /* hidden by default */
+}
+
 #word-display {
   align-items: center;
   background: transparent;
