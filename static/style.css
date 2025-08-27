@@ -70,7 +70,10 @@ body {
 #popup-compliment {
   border: 1px solid rgb(223, 217, 217);
   background-color: transparent;
+  display: none;
+  text-align: center;
   padding: 5px 6px;
+  width: fit-content;
 }
 
 #popup-compliment.panagram {
@@ -80,10 +83,10 @@ body {
 
 #popup-error {
   background-color: black;
+  border: 1px solid black ;
   color: white;
-  padding: 5px 8px;
+  padding: 5px 6px;
   border-radius: 3px;
-  font-size: 10px;
   text-align: center;
   width: fit-content;
   max-width: 80%;

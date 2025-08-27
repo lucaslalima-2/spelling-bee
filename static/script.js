@@ -72,10 +72,10 @@ function submitWord() {
     if (data["status"]=="fail") {
       if(data["word"].length < 4) {
         showErrorPopUp("too_short");
-        setTimeout(clearWord, 1000); //delays clearWord()
+        clearWord();
       } else if(!data["issubset"]) {
         showErrorPopUp("bad_letters");
-        setTimeout(clearWord, 1000); //delays clearWord()
+        clearWord();
       } else {
         console.log("function submitWord-> Unaccounted for submission: ", data)
       } // if subset
