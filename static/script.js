@@ -59,19 +59,27 @@ function submitWord() {
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
-        showPopUp(word, data["value"], data["panagram"]);
+        showPopUp(data["value"], data["panagram"]);
         updateScore(data["value"]);
         updateWordList(word);
         updateRank();
-      } // if word_bank
+      } else {
+        showErrorPopUp("already_found");
+      } // if-else word_bank
     }; //if success
   });//then data
 } //function
 
 // Function shows popup
-function showPopUp(word, value, ispanagram){
+function showPopUp(value, ispanagram){
   const popup_comp = document.getElementById('popup-compliment');
   const popup_val = document.getElementById('popup-value');
+
+  // Hides prev error popup
+  const popup_error = document.getElementById('popup-error');
+  popup_error.style.display = 'none';
+  popup_comp.style.display = 'inline-block';
+  popup_val.style.display = 'inline-block';
 
   // Determines compliment and value
   let compliment = "";
@@ -98,6 +106,42 @@ function showPopUp(word, value, ispanagram){
     void el.offsetWidth; // force reflow to restart animation
     el.style.animation = '';
   }); //forEach
+} // function
+
+// On redundant or error submission
+function showErrorPopUp(quality) {
+  const popup_container = document.getElementById('popup-container');
+  const popup_error = document.getElementById('popup-error');
+  const popup_comp = document.getElementById('popup-compliment');
+  const popup_val = document.getElementById('popup-value');
+
+  // Hide compliment/value
+  popup_comp.style.display = 'none';
+  popup_val.style.display = 'none';
+  
+  // Set text
+  switch(quality){
+    case "already_found":
+      popup_error.textContent = "Already found";
+      break;
+    case "bad_letters":
+      popup_error.textContent = "Bad Letters";
+      break;
+    case "too_short":
+      popup_error.textContent = "Too short";
+      break;
+  } // switch
+
+  // Trigger animation
+  popup_error.style.display = 'block';
+  popup_container.classList.add('show');
+  popup_error.classList.add("show");
+
+  // Reset animation
+  popup_error.style.animation = 'none';
+  void popup_error.offsetWidth;
+  popup_error.style.animation = '';
+
 } // function
 
 // Function updates score 
