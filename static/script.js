@@ -118,24 +118,30 @@ function showErrorPopUp(quality) {
   // Hide compliment/value
   popup_comp.style.display = 'none';
   popup_val.style.display = 'none';
-
-  // Show error container
-  popup_container.classList.add('show');
-  popup_error.style.display = 'block';
   
+  // Set text
   switch(quality){
     case "already_found":
       popup_error.textContent = "Already found";
+      break;
     case "bad_letters":
       popup_error.textContent = "Bad Letters";
+      break;
     case "too_short":
       popup_error.textContent = "Too short";
+      break;
   } // switch
 
-  // Removes popup animation
+  // Trigger animation
+  popup_error.style.display = 'block';
+  popup_container.classList.add('show');
+  popup_error.classList.add("show");
+
+  // Reset animation
   popup_error.style.animation = 'none';
-  void popup_error.offsetWidth; // force reflow to restart animation
+  void popup_error.offsetWidth;
   popup_error.style.animation = '';
+
 } // function
 
 // Function updates score 
