@@ -20,8 +20,9 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
+let debounceTimer;
+let inputLocked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
-// const max_score = window.FLASK_DATA.max_score;
 const max_score = 100; // for debug
 let rank_index = 0; // for rank_pointer setting
 let ring_letters = window.FLASK_DATA.ring_letters;
@@ -38,6 +39,7 @@ const percentages = [
   [0.40, "Genius"]
 ]
 let score = 0;
+const word_display = document.getElementById("word-display");
 let word_bank = new Set();
 
 // Function called when word is submitted
@@ -64,7 +66,7 @@ function submitWord() {
         clearWord();
       } else {
         showErrorPopUp("already_found");
-        setTimeout(clearWord, 1000); //delays clearWord()
+        clearWord();
       } // if-else word_bank
     }; //if success
 
@@ -144,6 +146,12 @@ function showErrorPopUp(quality) {
     case "too_short":
       popup_error.textContent = "Too short";
       break;
+    case "too_long":
+      popup_error.textContent = "Too long";
+      break;
+    default:
+      console.log("function showErrorPopUp-> Unaccounted for quality: ", quality)
+      break;
   } // switch
 
   // Trigger animation
@@ -163,7 +171,7 @@ function showErrorPopUp(quality) {
   word_display.addEventListener('animationend', function handleShakeEnd() {
     word_display.classList.remove('shake');
     word_display.removeEventListener('animationend', handleShakeEnd);
-} );
+  }); // add event listener
 } // function
 
 // Function updates score 
@@ -377,11 +385,58 @@ window.addEventListener("resize", () => {
   setRankPointer(rank_index); // or positionRankPointerAtIndex(rank_index)
 });
 
+// Event listener to disable word-display when character limit reached
+word_display.addEventListener("beforeinput", (e) => {
+  const currentText = word_display.textContent;
+  const incomingText = e.data || ""; // what the user is trying to add
+  const newLength = currentText.length + incomingText.length;
+
+  if (newLength > 20) {
+    e.preventDefault(); // blocks the input
+
+    if(!inputLocked) {
+      inputLocked = true;
+      showErrorPopUp("too_long");
+      word_display.classList.add("shake");
+
+      // Optional: reset font size and clear after shake
+      word_display.addEventListener("animationend", function handleShakeEnd() {
+        word_display.classList.remove("shake");
+        clearWord();
+        word_display.style.fontSize = "18px";
+        inputLocked = false; // unlocks input
+        word_display.removeEventListener("animationend", handleShakeEnd);
+      }); // add event listener
+    }; //if inputLocked
+  } // if 20
+}); // event listener
+
+// Event listener for string too long in word display
+word_display.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    const text_length = word_display.textContent.length;
+
+    // Shrinks
+    if (text_length <= 10) {
+      word_display.style.fontSize = "18px";
+    } else if (text_length <= 15) {
+      word_display.style.fontSize = "15px";
+    } else if (text_length <= 17) {
+      word_display.style.fontSize = "13px";
+    } else if (text_length <= 20) {
+      word_display.style.fontSize = "11px";
+    } else { // eliminates
+      showErrorPopUp("too_long");
+      clearWord();
+      word_display.style.fontSize = "18px"; // only reset after clear
+    } // if-else
+  }, 50); // debounce time
+}); // event listener
+
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
-  const word_display = document.getElementById("word-display");
   word_display.textContent = ""; // clears
-
   const enter_button = document.getElementById("enter-button");
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
