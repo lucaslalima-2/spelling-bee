@@ -390,10 +390,18 @@ body {
     min-width: unset;
     width: 100%;
   }
-
+  
   #left-column, #right-column {
     width: 100%;
     max-width: none;
+  }
+
+  #right-column {
+    order: -1; /* Moves right-column above left-column */
+  }
+
+  #left-column {
+    order: 0;
   }
 
   #honeycomb {
