@@ -21,7 +21,7 @@ const compliments = {
   20: "Fantastic!",
 }
 let debounceTimer;
-let inputLocked = false; // to prevent multiple rapid submissions
+let input_locked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
 const max_score = 100; // for debug
 let rank_index = 0; // for rank_pointer setting
@@ -387,15 +387,15 @@ window.addEventListener("resize", () => {
 
 // Event listener to disable word-display when character limit reached
 word_display.addEventListener("beforeinput", (e) => {
-  const currentText = word_display.textContent;
-  const incomingText = e.data || ""; // what the user is trying to add
-  const newLength = currentText.length + incomingText.length;
+  const current_text = word_display.textContent;
+  const incoming_text = e.data || ""; // what the user is trying to add
+  const new_length = current_text.length + incoming_text.length;
 
-  if (newLength > 20) {
+  if (new_length > 20) {
     e.preventDefault(); // blocks the input
 
-    if(!inputLocked) {
-      inputLocked = true;
+    if(!input_locked) { // prevents multiple rapid submissions
+      input_locked = true;
       showErrorPopUp("too_long");
       word_display.classList.add("shake");
 
@@ -404,7 +404,7 @@ word_display.addEventListener("beforeinput", (e) => {
         word_display.classList.remove("shake");
         clearWord();
         word_display.style.fontSize = "18px";
-        inputLocked = false; // unlocks input
+        input_locked = false; // unlocks input
         word_display.removeEventListener("animationend", handleShakeEnd);
       }); // add event listener
     }; //if inputLocked
