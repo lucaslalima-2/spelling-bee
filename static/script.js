@@ -78,6 +78,9 @@ function submitWord() {
       } else if(!data["issubset"]) {
         showErrorPopUp("bad_letters");
         clearWord();
+      } else if(data["issubset"]) {
+        showErrorPopUp("not_in_word_list");
+        clearWord();
       } else {
         console.log("function submitWord-> Unaccounted for submission: ", data)
       } // if subset
@@ -149,6 +152,8 @@ function showErrorPopUp(quality) {
     case "too_long":
       popup_error.textContent = "Too long";
       break;
+    case "not_in_word_list":
+      popup_error.textContent = "Not in word list";
     default:
       console.log("function showErrorPopUp-> Unaccounted for quality: ", quality)
       break;
