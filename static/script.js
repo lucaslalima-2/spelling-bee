@@ -38,6 +38,7 @@ const percentages = [
   [0.40, "Genius"]
 ]
 let score = 0;
+const word_display = document.getElementById("word-display");
 let word_bank = new Set();
 
 // Function called when word is submitted
@@ -143,6 +144,12 @@ function showErrorPopUp(quality) {
       break;
     case "too_short":
       popup_error.textContent = "Too short";
+      break;
+    case "too_long":
+      popup_error.textContent = "Too long";
+      break;
+    default:
+      console.log("function showErrorPopUp-> Unaccounted for quality: ", quality)
       break;
   } // switch
 
@@ -377,11 +384,18 @@ window.addEventListener("resize", () => {
   setRankPointer(rank_index); // or positionRankPointerAtIndex(rank_index)
 });
 
+// Event listener for string too long in word display
+word_display.addEventListener("input", () => {
+  const max_length = 20; // Define your maximum length here
+  if (word_display.textContent.length > max_length) {
+    showErrorPopUp("too_long");
+    clearWord();
+  } // if
+}); // event listener
+
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
-  const word_display = document.getElementById("word-display");
   word_display.textContent = ""; // clears
-
   const enter_button = document.getElementById("enter-button");
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
