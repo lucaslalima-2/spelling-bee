@@ -54,8 +54,6 @@ function submitWord() {
   .then(response => response.json())
   .then(data =>{
 
-    clearWord(); // clears word
-
     // Successful answer
     if(data["status"]=="success") {
       if(!word_bank.has(word)){
@@ -63,11 +61,20 @@ function submitWord() {
         updateScore(data["value"]);
         updateWordList(word);
         updateRank();
+        clearWord();
       } else {
         showErrorPopUp("already_found");
+        setTimeout(clearWord, 1000); //delays clearWord()
       } // if-else word_bank
     }; //if success
-  });//then data
+
+    // Wrong answer
+    console.log(data);
+    if (data["status"]=="fail") {
+      clearWord();
+    } // 
+  });//if data
+
 } //function
 
 // Function shows popup
@@ -142,6 +149,14 @@ function showErrorPopUp(quality) {
   void popup_error.offsetWidth;
   popup_error.style.animation = '';
 
+  // Adds shake to word-display
+  const word_display = document.getElementById('word-display');
+  word_display.classList.add('shake'); // Trigger
+  // Timeout
+  word_display.addEventListener('animationend', function handleShakeEnd() {
+    word_display.classList.remove('shake');
+    word_display.removeEventListener('animationend', handleShakeEnd);
+} );
 } // function
 
 // Function updates score 
