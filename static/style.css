@@ -114,6 +114,7 @@ body {
   align-items: center;
   background: transparent;
   border: none;
+  caret-color: var(--highlight);
   color: black;
   display: flex;
   font-size: 18px;
