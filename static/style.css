@@ -9,9 +9,15 @@ body {
   --word-list-border: rgb(211, 211, 211);
 }
 
+#title-container {
+  display: flex;
+  justify-content: center;
+}
+
 #title {
-  text-align: center;
-  margin: 10px 0 0 0;
+  margin: 10px auto 0 auto;
+  display: block;
+  width: fit-content;
 }
 
 #game-container {
