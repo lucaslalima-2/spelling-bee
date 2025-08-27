@@ -126,13 +126,17 @@ body {
   caret-color: var(--highlight);
   color: black;
   display: flex;
+  flex: 0 1 auto;
   font-size: 18px;
   font-weight: bold;
   justify-content: center;
+  max-width: 90%;
   min-height: 40px;
   margin-top: 10px;
   text-align: center;
+  text-overflow: ellipsis;
   outline: none;
+  overflow: hidden;
   white-space: nowrap;
   width: 100%;
 }
