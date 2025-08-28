@@ -20,7 +20,9 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
-let debounceTimer;
+let debounce_timer;
+const arrow = document.getElementById("arrow");
+let arrow_state = "down"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
 const max_score = 100; // for debug
@@ -422,8 +424,8 @@ word_display.addEventListener("beforeinput", (e) => {
 
 // Event listener for string too long in word display
 word_display.addEventListener("input", () => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
+  clearTimeout(debounce_timer);
+  debounce_timer = setTimeout(() => {
     const text_length = word_display.textContent.length;
 
     // Shrinks
@@ -441,6 +443,21 @@ word_display.addEventListener("input", () => {
       word_display.style.fontSize = "18px"; // only reset after clear
     } // if-else
   }, 50); // debounce time
+}); // event listener
+
+// @ media query - down arrow click behavior
+arrow.addEventListener("click", () => {
+  // Rotates arrow
+  if (arrow_state == "down") {
+    arrow_state = "up";
+    arrow.classList.remove("rotate_down"); // resets arrow
+    arrow.classList.add("rotate_up"); // spins arrow
+  } else {
+    arrow_state = "down";
+    arrow.classList.remove("rotate_up"); // resets arrow
+    arrow.classList.add("rotate_down"); // spins arrow
+  } // if-else
+
 }); // event listener
 
 // Event listener for Content loads. Auto-focus cursor on page load
