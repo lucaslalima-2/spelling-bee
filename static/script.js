@@ -22,7 +22,7 @@ const compliments = {
 }
 let debounce_timer;
 const arrow = document.getElementById("arrow");
-let arrow_state = "down"; // tracks arrow state
+let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
 const max_score = 100; // for debug
@@ -127,10 +127,15 @@ function showPopUp(value, ispanagram){
     void el.offsetWidth; // force reflow to restart animation
     el.style.animation = '';
   }); //forEach
+
+   // Remove .show after animation ends
+  popup_val.addEventListener('animationend', () => {
+    popup_container.classList.remove('show');
+  }, { once: true }); // ensures the listener runs only once
 } // function
 
 // On redundant or error submission
-function showErrorPopUp(quality) {
+function showErrorPopUp(quality) {  
   const popup_container = document.getElementById('popup-container');
   const popup_error = document.getElementById('popup-error');
   const popup_comp = document.getElementById('popup-compliment');
@@ -177,6 +182,7 @@ function showErrorPopUp(quality) {
   // Timeout
   word_display.addEventListener('animationend', function handleShakeEnd() {
     word_display.classList.remove('shake');
+    popup_container.classList.remove('show');
     word_display.removeEventListener('animationend', handleShakeEnd);
   }); // add event listener
 } // function
@@ -447,17 +453,36 @@ word_display.addEventListener("input", () => {
 
 // @ media query - down arrow click behavior
 arrow.addEventListener("click", () => {
+  const word_columns = document.getElementById("word-columns");
+  const word_message = document.getElementById("word-message");
+  const word_preview = document.getElementById("word-preview");
+  const left_column = document.getElementById("left-column");
+
   // Rotates arrow
   if (arrow_state == "down") {
+    // Flip up
     arrow_state = "up";
     arrow.classList.remove("rotate_down"); // resets arrow
     arrow.classList.add("rotate_up"); // spins arrow
+    // Reveals/hides elements
+    word_preview.style.display = "block";
+    word_columns.style.display = "none";
+    word_message.style.display = "none";
+    // Reveals left column
+    left_column.style.display = "flex";
+    resetFocus();
   } else {
+    // Flip down
     arrow_state = "down";
     arrow.classList.remove("rotate_up"); // resets arrow
     arrow.classList.add("rotate_down"); // spins arrow
+    // Reveals/hides elements
+    word_preview.style.display = "none";
+    word_columns.style.display = "flex";
+    word_message.style.display = "block";
+    // Hides left column
+    left_column.style.display = "none";
   } // if-else
-
 }); // event listener
 
 // Event listener for Content loads. Auto-focus cursor on page load
