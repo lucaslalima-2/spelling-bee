@@ -195,7 +195,7 @@ function updateWordList(word){
     document.getElementById(`column-${i}`).innerHTML = '';
   } // for
 
-  // Posts all words from word_bank
+  // Posts all words from word_bank (webapp config)
   sorted_words.forEach( (word, index) => {
     const colindex = Math.floor(index / max_per_column);
     const word_element = document.createElement("div");
@@ -203,6 +203,10 @@ function updateWordList(word){
     word_element.textContent = setTitleCase(word);
     document.getElementById(`column-${colindex}`).appendChild(word_element);
   });
+
+  // Posts all words to word-preview (media config)
+  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
+  document.getElementById("word-preview").textContent = preview_string;
 
   // Update header message (ie. "You have found x words")
   let word_message = document.getElementById("word-message");

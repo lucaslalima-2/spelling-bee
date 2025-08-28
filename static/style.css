@@ -352,7 +352,7 @@ body {
   margin: 10px 0 0 0;
   min-height: 400px;
   overflow-x: hidden; /* prevents horizontal scroll if columns overflow */
-  padding: 10;
+  padding: 10px;
   width: 100%;
 }
 
@@ -381,6 +381,12 @@ body {
   justify-content: center;
 }
 
+#down-arrow {
+  display: none;
+}
+
+/* Media section */
+
 @media (max-width: 600px) {
   #game-layout {
     align-items: center;
@@ -404,6 +410,12 @@ body {
     order: 0;
   }
 
+  /* Left-column */
+  #popup-container {
+    margin-top: 15px;
+    margin-bottom: -10px;
+  }
+
   #honeycomb {
     align-items: center;
     flex-direction: row;
@@ -420,5 +432,42 @@ body {
 
   .col-1, .col-3 {
     margin-top: 0;
+  }
+
+  /* Right-column */
+  #word-list-container {
+    display: none;
+  }
+
+  #word-header-container {
+    border: 1px solid var(--word-list-border); /* or a direct color like #ccc */
+    /* border-radius: 5px; */
+    padding: 8px 8px;
+    margin-top: 10px;
+    background-color: white; /* optional: improves contrast */
+  }
+
+  #word-list-header {
+    align-items: center;
+    display: flex;
+    font-size: 10px;
+    justify-content: space-between;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  #word-preview {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex-grow: 1;
+    max-width: 100%;
+  }
+
+  #down-arrow {
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    margin: 0px 10px 0 0
   }
 }
