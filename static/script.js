@@ -449,11 +449,11 @@ word_display.addEventListener("input", () => {
     if (text_length <= 10) {
       word_display.style.fontSize = "18px";
     } else if (text_length <= 15) {
-      word_display.style.fontSize = "15px";
+      word_display.style.fontSize = "16px";
     } else if (text_length <= 17) {
-      word_display.style.fontSize = "13px";
+      word_display.style.fontSize = "14px";
     } else if (text_length <= 20) {
-      word_display.style.fontSize = "11px";
+      word_display.style.fontSize = "12px";
     } else { // eliminates
       showErrorPopUp("too_long");
       clearWord();
