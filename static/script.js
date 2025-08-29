@@ -1,5 +1,6 @@
 // Variables
 "use strict";
+let active_animations = [];
 const all_letters = window.FLASK_DATA.all_letters;
 const center_letter = window.FLASK_DATA.center_letter;
 const compliments = {
@@ -120,6 +121,10 @@ function showPopUp(value, ispanagram){
   // Adds popup animatinon
   const popup_container = document.getElementById('popup-container');
   popup_container.classList.add('show');
+  popup_comp.classList.add("show");
+  popup_val.classList.add("show");
+  active_animations.push(popup_comp);
+  active_animations.push(popup_val);
 
   // Removes popup animation
   [popup_comp, popup_val].forEach(el => {
@@ -131,11 +136,13 @@ function showPopUp(value, ispanagram){
    // Remove .show after animation ends
   popup_val.addEventListener('animationend', () => {
     popup_container.classList.remove('show');
-  }, { once: true }); // ensures the listener runs only once
+    active_animations = active_animations.filter(el => el !== popup_comp);
+    active_animations = active_animations.filter(el => el !== popup_val);
+  }); // ensures the listener runs only once
 } // function
 
 // On redundant or error submission
-function showErrorPopUp(quality) {  
+function showErrorPopUp(quality) {
   const popup_container = document.getElementById('popup-container');
   const popup_error = document.getElementById('popup-error');
   const popup_comp = document.getElementById('popup-compliment');
@@ -170,6 +177,7 @@ function showErrorPopUp(quality) {
   popup_error.style.display = 'block';
   popup_container.classList.add('show');
   popup_error.classList.add("show");
+  active_animations.push(popup_error);
 
   // Reset animation
   popup_error.style.animation = 'none';
@@ -179,10 +187,12 @@ function showErrorPopUp(quality) {
   // Adds shake to word-display
   const word_display = document.getElementById('word-display');
   word_display.classList.add('shake'); // Trigger
+
   // Timeout
   word_display.addEventListener('animationend', function handleShakeEnd() {
     word_display.classList.remove('shake');
     popup_container.classList.remove('show');
+    active_animations = active_animations.filter(el => el !== popup_error);
     word_display.removeEventListener('animationend', handleShakeEnd);
   }); // add event listener
 } // function
@@ -453,6 +463,15 @@ word_display.addEventListener("input", () => {
 
 // @ media query - down arrow click behavior
 arrow.addEventListener("click", () => {
+  // Kill any active animations
+  active_animations.forEach(el => {
+    el.style.animation = 'none';
+    el.classList.remove('show'); // optional: remove visibility
+    el.style.display = 'none';   // optional: hide element
+  });
+  document.getElementById("word-display").classList.remove("shake");
+
+  // Variables
   const word_columns = document.getElementById("word-columns");
   const word_message = document.getElementById("word-message");
   const word_preview = document.getElementById("word-preview");
@@ -470,6 +489,8 @@ arrow.addEventListener("click", () => {
     word_message.style.display = "none";
     // Reveals left column
     left_column.style.display = "flex";
+    document.getElementById("popup-container").classList.add("show");
+    // document.getElementById("popup-container").style.display = "inline-block";
     resetFocus();
   } else {
     // Flip down
