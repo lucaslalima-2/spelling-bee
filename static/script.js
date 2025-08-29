@@ -12,7 +12,7 @@ const compliments = {
   10: "Incredible!",
   11: "Unbelievable!",
   12: "Genius!",
-  13: "Magnificent!",
+  13: "Magnificent!", 
   14: "Spectacular!",
   15: "Phenomenal!",
   16: "Astounding!",
@@ -27,6 +27,7 @@ let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
 const max_score = 100; // for debug
+const media_query = window.matchMedia("(max-width: 600px)");
 let rank_index = 0; // for rank_pointer setting
 let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
@@ -460,6 +461,50 @@ word_display.addEventListener("input", () => {
     } // if-else
   }, 50); // debounce time
 }); // event listener
+
+// Event listener for media query change
+function handleMediaChange(e) {
+  // console.log("Media Query Change Detected: ", e);
+  const in_media_mode =  e.matches; // true if in media-mode
+  // Variables
+  const word_list_container = document.getElementById("word-list-container");
+  const word_columns = document.getElementById("word-columns");
+  const word_message = document.getElementById("word-message");
+  const word_preview = document.getElementById("word-preview");
+  const left_column = document.getElementById("left-column");
+  const arrow = document.getElementById("arrow");
+
+  // Determines what to show
+  if (in_media_mode) { // media mode
+    // Sets arrow
+    arrow.style.display = "block";
+    arrow_state = "up";
+    arrow.classList.add("rotate_up");
+    arrow.classList.remove("rotate_down");
+    // Sets word_message
+    word_message.style.display = "none";
+    // Sets word_preview
+    word_preview.style.display = "block";
+    // Hides word_columns
+    word_columns.style.display = "none";
+  } else { // webapp mode
+    // Resets arrow state
+    arrow.style.display = "none";
+    arrow_state = "down";
+    arrow.classList.add("rotate_down");
+    arrow.classList.remove("rotate_up");
+    // Sets word_message
+    word_message.style.display = "block";
+    // Hides word_preview
+    word_preview.style.display = "none";
+    // Reveals word_columns
+    word_columns.style.display = "flex";
+    // Reveals left column
+    left_column.style.display = "flex";
+  };
+
+} // function
+media_query.addEventListener("change", handleMediaChange); // Listener
 
 // @ media query - down arrow click behavior
 arrow.addEventListener("click", () => {
