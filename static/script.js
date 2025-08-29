@@ -47,6 +47,9 @@ let score = 0;
 const word_display = document.getElementById("word-display");
 let word_bank = new Set();
 
+// debug word_back
+// let word_bank = new Set(Array.from({ length: 60 }, (_, i) => `word-${i + 1}`));
+
 // Function called when word is submitted
 function submitWord() {
   let word = document.getElementById("word-display").textContent.toUpperCase();
@@ -482,6 +485,8 @@ function handleMediaChange(e) {
     arrow_state = "up";
     arrow.classList.add("rotate_up");
     arrow.classList.remove("rotate_down");
+    // Sets container
+    word_list_container.style.flexGrow = "0";
     // Sets word_message
     word_message.style.display = "none";
     // Sets word_preview
@@ -494,6 +499,8 @@ function handleMediaChange(e) {
     arrow_state = "down";
     arrow.classList.add("rotate_down");
     arrow.classList.remove("rotate_up");
+    // Sets container
+    word_list_container.style.flexGrow = "1";
     // Sets word_message
     word_message.style.display = "block";
     // Hides word_preview
@@ -587,7 +594,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setInputStyle(); // Sets entry field style
   shuffleLetters(); // Sets ring_letter configuration
   updateRank();
-  renderDots();
 
   // Blur event ("user clicks away from input")
   word_display.addEventListener("blur", function() {
