@@ -21,11 +21,12 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
+let current_page = 0; // for pagination
 let debounce_timer;
 const arrow = document.getElementById("arrow");
 let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
-const max_per_column = 14; // max words per column in found section
+const max_per_column = 10; // max words per column in found section
 const max_score = 100; // for debug
 const media_query = window.matchMedia("(max-width: 600px)");
 let rank_index = 0; // for rank_pointer setting
@@ -534,8 +535,6 @@ arrow.addEventListener("click", () => {
     word_message.style.display = "none";
     // Reveals left column
     left_column.style.display = "flex";
-    document.getElementById("popup-container").classList.add("show");
-    // document.getElementById("popup-container").style.display = "inline-block";
     resetFocus();
   } else {
     // Flip down
@@ -551,6 +550,31 @@ arrow.addEventListener("click", () => {
   } // if-else
 }); // event listener
 
+function renderDots() {
+  const dot_container = document.getElementById("dot-indicator");
+  dot_container.innerHTML = ""; // Clear existing dots
+
+  // Calculates number of pages needed
+  const max_per_page = max_per_column * 3; // 3 columns
+  const page_count = Math.ceil(word_bank.length / max_per_page);
+
+  for (let i = 0; i < page_count; i++) {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    if (i === current_page) {
+      dot.classList.add("active");
+    } // if
+
+    // Event listener for dot click
+    dot.addEventListener("click", () => {
+      current_page = i;
+      renderDots();
+    });
+
+    dot_container.appendChild(dot);
+  } // for
+} // renderDots
+
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
   word_display.textContent = ""; // clears
@@ -563,6 +587,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setInputStyle(); // Sets entry field style
   shuffleLetters(); // Sets ring_letter configuration
   updateRank();
+  renderDots();
 
   // Blur event ("user clicks away from input")
   word_display.addEventListener("blur", function() {
