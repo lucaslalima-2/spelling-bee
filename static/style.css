@@ -52,14 +52,15 @@ body {
 /* Left-column */
 #popup-container {
   align-items: center;
-  color: black;
-  display: flex;
-  gap: 3px;
-  padding: 3px 5px;
   border-radius: 5px;
   background: transparent;
+  color: black;
+  display: flex;
   font-size: 9px;
+  gap: 3px;
+  padding: 3px 5px;
   opacity: 0;
+  min-height: 30px;
   transition: opacity 0.4s;
 }
 
@@ -96,8 +97,8 @@ body {
 
 #popup-compliment,
 #popup-value {
-  display: inline-block;
-  vertical-align: middle;
+  display: block;
+  /* vertical-align: middle; */
   transition: opacity 0.4s;
   animation: fadeUp 1.5s ease-in-out forwards;
 }
@@ -179,7 +180,7 @@ body {
 }
 
 .col-2 {
-  margin-top: 3px;
+  margin-top: 2px;
   margin-left: -12px;
   margin-right: -12px;
 }
@@ -352,8 +353,38 @@ body {
   margin: 10px 0 0 0;
   min-height: 400px;
   overflow-x: hidden; /* prevents horizontal scroll if columns overflow */
-  padding: 10;
+  padding: 10px;
   width: 100%;
+}
+
+#word-list-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#word-message {
+  font-size: 12px;
+  justify-content: center;
+  padding: 5px 0 0 10px;
+}
+
+#word-preview {
+  display: none;
+}
+
+#arrow {
+  display: none;
+  transition: transform 0.3s ease;
+}
+
+#arrow.rotate_up {
+  transform: rotate(180deg); /* spins clockwise to point upward */
+}
+
+#arrow.rotate_down {
+  transform: rotate(0deg); /* points downward */
 }
 
 #word-columns {
@@ -375,11 +406,7 @@ body {
   padding: 4px 0;
 }
 
-#word-message {
-  padding: 5px 0 0 10px;
-  font-size: 12px;
-  justify-content: center;
-}
+/* Media section */
 
 @media (max-width: 600px) {
   #game-layout {
@@ -390,10 +417,24 @@ body {
     min-width: unset;
     width: 100%;
   }
-
+  
   #left-column, #right-column {
     width: 100%;
     max-width: none;
+  }
+
+  #right-column {
+    order: -1; /* Moves right-column above left-column */
+  }
+
+  #left-column {
+    order: 0;
+  }
+
+  /* Left-column */
+  #popup-container {
+    margin-top: 15px;
+    margin-bottom: -10px;
   }
 
   #honeycomb {
@@ -412,5 +453,47 @@ body {
 
   .col-1, .col-3 {
     margin-top: 0;
+  }
+
+  /* Right-column */
+  #word-list-container {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    min-height: 10px;
+    padding: 0;;
+    width: 100%;
+  }
+
+  #word-message {
+    display: none;
+  }
+
+  #word-preview {
+    display: flex;
+    flex-grow: 1;
+    font-size: 10px;
+    margin-left: 10px;
+    overflow: hidden;
+    padding: 0;
+    text-overflow: ellipsis;;
+    white-space: nowrap;
+  }
+
+  #arrow {
+    cursor: pointer;
+    display: flex;
+    font-size: 10px;
+    transform-origin: center;
+    transform: rotate(180deg); /* points upward by default */
+    padding: 5px 5px;
+  }
+  
+  #word-columns {
+    display: none;
+    height: 400px;
+    width: 100%;
   }
 }

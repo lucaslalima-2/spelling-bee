@@ -1,5 +1,6 @@
 // Variables
 "use strict";
+let active_animations = [];
 const all_letters = window.FLASK_DATA.all_letters;
 const center_letter = window.FLASK_DATA.center_letter;
 const compliments = {
@@ -11,7 +12,7 @@ const compliments = {
   10: "Incredible!",
   11: "Unbelievable!",
   12: "Genius!",
-  13: "Magnificent!",
+  13: "Magnificent!", 
   14: "Spectacular!",
   15: "Phenomenal!",
   16: "Astounding!",
@@ -20,10 +21,13 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
-let debounceTimer;
+let debounce_timer;
+const arrow = document.getElementById("arrow");
+let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
 const max_per_column = 14; // max words per column in found section
 const max_score = 100; // for debug
+const media_query = window.matchMedia("(max-width: 600px)");
 let rank_index = 0; // for rank_pointer setting
 let ring_letters = window.FLASK_DATA.ring_letters;
 const panagram = window.FLASK_DATA.panagram;
@@ -118,6 +122,10 @@ function showPopUp(value, ispanagram){
   // Adds popup animatinon
   const popup_container = document.getElementById('popup-container');
   popup_container.classList.add('show');
+  popup_comp.classList.add("show");
+  popup_val.classList.add("show");
+  active_animations.push(popup_comp);
+  active_animations.push(popup_val);
 
   // Removes popup animation
   [popup_comp, popup_val].forEach(el => {
@@ -125,6 +133,13 @@ function showPopUp(value, ispanagram){
     void el.offsetWidth; // force reflow to restart animation
     el.style.animation = '';
   }); //forEach
+
+   // Remove .show after animation ends
+  popup_val.addEventListener('animationend', () => {
+    popup_container.classList.remove('show');
+    active_animations = active_animations.filter(el => el !== popup_comp);
+    active_animations = active_animations.filter(el => el !== popup_val);
+  }); // ensures the listener runs only once
 } // function
 
 // On redundant or error submission
@@ -163,6 +178,7 @@ function showErrorPopUp(quality) {
   popup_error.style.display = 'block';
   popup_container.classList.add('show');
   popup_error.classList.add("show");
+  active_animations.push(popup_error);
 
   // Reset animation
   popup_error.style.animation = 'none';
@@ -172,9 +188,12 @@ function showErrorPopUp(quality) {
   // Adds shake to word-display
   const word_display = document.getElementById('word-display');
   word_display.classList.add('shake'); // Trigger
+
   // Timeout
   word_display.addEventListener('animationend', function handleShakeEnd() {
     word_display.classList.remove('shake');
+    popup_container.classList.remove('show');
+    active_animations = active_animations.filter(el => el !== popup_error);
     word_display.removeEventListener('animationend', handleShakeEnd);
   }); // add event listener
 } // function
@@ -195,7 +214,7 @@ function updateWordList(word){
     document.getElementById(`column-${i}`).innerHTML = '';
   } // for
 
-  // Posts all words from word_bank
+  // Posts all words from word_bank (webapp config)
   sorted_words.forEach( (word, index) => {
     const colindex = Math.floor(index / max_per_column);
     const word_element = document.createElement("div");
@@ -203,6 +222,10 @@ function updateWordList(word){
     word_element.textContent = setTitleCase(word);
     document.getElementById(`column-${colindex}`).appendChild(word_element);
   });
+
+  // Posts all words to word-preview (media config)
+  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
+  document.getElementById("word-preview").textContent = preview_string;
 
   // Update header message (ie. "You have found x words")
   let word_message = document.getElementById("word-message");
@@ -418,25 +441,114 @@ word_display.addEventListener("beforeinput", (e) => {
 
 // Event listener for string too long in word display
 word_display.addEventListener("input", () => {
-  clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => {
+  clearTimeout(debounce_timer);
+  debounce_timer = setTimeout(() => {
     const text_length = word_display.textContent.length;
 
     // Shrinks
     if (text_length <= 10) {
       word_display.style.fontSize = "18px";
     } else if (text_length <= 15) {
-      word_display.style.fontSize = "15px";
+      word_display.style.fontSize = "16px";
     } else if (text_length <= 17) {
-      word_display.style.fontSize = "13px";
+      word_display.style.fontSize = "14px";
     } else if (text_length <= 20) {
-      word_display.style.fontSize = "11px";
+      word_display.style.fontSize = "12px";
     } else { // eliminates
       showErrorPopUp("too_long");
       clearWord();
       word_display.style.fontSize = "18px"; // only reset after clear
     } // if-else
   }, 50); // debounce time
+}); // event listener
+
+// Event listener for media query change
+function handleMediaChange(e) {
+  // console.log("Media Query Change Detected: ", e);
+  const in_media_mode =  e.matches; // true if in media-mode
+  // Variables
+  const word_list_container = document.getElementById("word-list-container");
+  const word_columns = document.getElementById("word-columns");
+  const word_message = document.getElementById("word-message");
+  const word_preview = document.getElementById("word-preview");
+  const left_column = document.getElementById("left-column");
+  const arrow = document.getElementById("arrow");
+
+  // Determines what to show
+  if (in_media_mode) { // media mode
+    // Sets arrow
+    arrow.style.display = "block";
+    arrow_state = "up";
+    arrow.classList.add("rotate_up");
+    arrow.classList.remove("rotate_down");
+    // Sets word_message
+    word_message.style.display = "none";
+    // Sets word_preview
+    word_preview.style.display = "block";
+    // Hides word_columns
+    word_columns.style.display = "none";
+  } else { // webapp mode
+    // Resets arrow state
+    arrow.style.display = "none";
+    arrow_state = "down";
+    arrow.classList.add("rotate_down");
+    arrow.classList.remove("rotate_up");
+    // Sets word_message
+    word_message.style.display = "block";
+    // Hides word_preview
+    word_preview.style.display = "none";
+    // Reveals word_columns
+    word_columns.style.display = "flex";
+    // Reveals left column
+    left_column.style.display = "flex";
+  };
+
+} // function
+media_query.addEventListener("change", handleMediaChange); // Listener
+
+// @ media query - down arrow click behavior
+arrow.addEventListener("click", () => {
+  // Kill any active animations
+  active_animations.forEach(el => {
+    el.style.animation = 'none';
+    el.classList.remove('show'); // optional: remove visibility
+    el.style.display = 'none';   // optional: hide element
+  });
+  document.getElementById("word-display").classList.remove("shake");
+
+  // Variables
+  const word_columns = document.getElementById("word-columns");
+  const word_message = document.getElementById("word-message");
+  const word_preview = document.getElementById("word-preview");
+  const left_column = document.getElementById("left-column");
+
+  // Rotates arrow
+  if (arrow_state == "down") {
+    // Flip up
+    arrow_state = "up";
+    arrow.classList.remove("rotate_down"); // resets arrow
+    arrow.classList.add("rotate_up"); // spins arrow
+    // Reveals/hides elements
+    word_preview.style.display = "block";
+    word_columns.style.display = "none";
+    word_message.style.display = "none";
+    // Reveals left column
+    left_column.style.display = "flex";
+    document.getElementById("popup-container").classList.add("show");
+    // document.getElementById("popup-container").style.display = "inline-block";
+    resetFocus();
+  } else {
+    // Flip down
+    arrow_state = "down";
+    arrow.classList.remove("rotate_up"); // resets arrow
+    arrow.classList.add("rotate_down"); // spins arrow
+    // Reveals/hides elements
+    word_preview.style.display = "none";
+    word_columns.style.display = "flex";
+    word_message.style.display = "block";
+    // Hides left column
+    left_column.style.display = "none";
+  } // if-else
 }); // event listener
 
 // Event listener for Content loads. Auto-focus cursor on page load
