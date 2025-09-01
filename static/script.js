@@ -47,10 +47,10 @@ const percentages = [
 ]
 let score = 0;
 const word_display = document.getElementById("word-display");
-// let word_bank = new Set();
 
 // debug word_back
-let word_bank = new Set(Array.from({ length: 31 }, (_, i) => `word-${i + 1}`));
+// let word_bank = new Set(Array.from({ length: 31 }, (_, i) => `word-${i + 1}`));
+let word_bank = new Set();
 
 // Function called when word is submitted
 function submitWord() {
