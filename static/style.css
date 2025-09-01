@@ -434,7 +434,7 @@ html, body {
   border-bottom: 1px solid lightgray;
   break-inside: avoid;
   padding: 4px 0;
-  width: 100%;
+  width: calc(100% - 10px);
 }
 
 #dot-indicator-wrapper {
