@@ -21,11 +21,12 @@ const compliments = {
   19: "Fabulous!",
   20: "Fantastic!",
 }
+let current_page = 0; // for pagination
 let debounce_timer;
 const arrow = document.getElementById("arrow");
 let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
-const max_per_column = 14; // max words per column in found section
+const max_per_column = 10; // max words per column in found section
 const max_score = 100; // for debug
 const media_query = window.matchMedia("(max-width: 600px)");
 let rank_index = 0; // for rank_pointer setting
@@ -44,7 +45,10 @@ const percentages = [
 ]
 let score = 0;
 const word_display = document.getElementById("word-display");
-let word_bank = new Set();
+// let word_bank = new Set();
+
+// debug word_back
+let word_bank = new Set(Array.from({ length: 60 }, (_, i) => `word-${i + 1}`));
 
 // Function called when word is submitted
 function submitWord() {
@@ -224,8 +228,7 @@ function updateWordList(word){
   });
 
   // Posts all words to word-preview (media config)
-  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
-  document.getElementById("word-preview").textContent = preview_string;
+  updateWordPreview();
 
   // Update header message (ie. "You have found x words")
   let word_message = document.getElementById("word-message");
@@ -235,6 +238,13 @@ function updateWordList(word){
     word_message.innerText = `You have found ${sorted_words.length} words`;
   } // if-else
 }// function
+
+// Updates word preview
+function updateWordPreview() {
+  let sorted_words = Array.from(word_bank).sort();
+  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
+  document.getElementById("word-preview").textContent = preview_string;
+} // function
 
 // Function updates rank
 function updateRank(){
@@ -481,10 +491,13 @@ function handleMediaChange(e) {
     arrow_state = "up";
     arrow.classList.add("rotate_up");
     arrow.classList.remove("rotate_down");
+    // Sets container
+    word_list_container.style.flexGrow = "0";
     // Sets word_message
     word_message.style.display = "none";
     // Sets word_preview
     word_preview.style.display = "block";
+    updateWordPreview()
     // Hides word_columns
     word_columns.style.display = "none";
   } else { // webapp mode
@@ -493,6 +506,8 @@ function handleMediaChange(e) {
     arrow_state = "down";
     arrow.classList.add("rotate_down");
     arrow.classList.remove("rotate_up");
+    // Sets container
+    word_list_container.style.flexGrow = "1";
     // Sets word_message
     word_message.style.display = "block";
     // Hides word_preview
@@ -517,10 +532,12 @@ arrow.addEventListener("click", () => {
   document.getElementById("word-display").classList.remove("shake");
 
   // Variables
+  const word_list_container = document.getElementById("word-list-container");
   const word_columns = document.getElementById("word-columns");
   const word_message = document.getElementById("word-message");
   const word_preview = document.getElementById("word-preview");
   const left_column = document.getElementById("left-column");
+  const right_column = document.getElementById("right-column");
 
   // Rotates arrow
   if (arrow_state == "down") {
@@ -529,13 +546,13 @@ arrow.addEventListener("click", () => {
     arrow.classList.remove("rotate_down"); // resets arrow
     arrow.classList.add("rotate_up"); // spins arrow
     // Reveals/hides elements
+    right_column.style.flexGrow = "0";
+    word_list_container.style.flexGrow = "0";
     word_preview.style.display = "block";
+    updateWordPreview();
     word_columns.style.display = "none";
     word_message.style.display = "none";
-    // Reveals left column
     left_column.style.display = "flex";
-    document.getElementById("popup-container").classList.add("show");
-    // document.getElementById("popup-container").style.display = "inline-block";
     resetFocus();
   } else {
     // Flip down
@@ -543,13 +560,41 @@ arrow.addEventListener("click", () => {
     arrow.classList.remove("rotate_up"); // resets arrow
     arrow.classList.add("rotate_down"); // spins arrow
     // Reveals/hides elements
-    word_preview.style.display = "none";
+    right_column.style.flexGrow = "1";
+    word_list_container.style.flexGrow = "1";
+    word_preview.style.display = "block";
+    word_preview.textContent = "";
     word_columns.style.display = "flex";
-    word_message.style.display = "block";
-    // Hides left column
+    word_columns.style.flexGrow = "1";
+    word_message.style.display = "flex";
     left_column.style.display = "none";
   } // if-else
 }); // event listener
+
+function renderDots() {
+  const dot_container = document.getElementById("dot-indicator");
+  dot_container.innerHTML = ""; // Clear existing dots
+
+  // Calculates number of pages needed
+  const max_per_page = max_per_column * 3; // 3 columns
+  const page_count = Math.ceil(word_bank.length / max_per_page);
+
+  for (let i = 0; i < page_count; i++) {
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    if (i === current_page) {
+      dot.classList.add("active");
+    } // if
+
+    // Event listener for dot click
+    dot.addEventListener("click", () => {
+      current_page = i;
+      renderDots();
+    });
+
+    dot_container.appendChild(dot);
+  } // for
+} // renderDots
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
