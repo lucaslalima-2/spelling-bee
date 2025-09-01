@@ -134,7 +134,7 @@ html, body {
   background: transparent;
   border: none;
   caret-color: var(--highlight);
-  color: black;
+  color: rgb(188, 182, 182);
   display: flex;
   flex: 0 1 auto;
   font-size: 18px;

@@ -26,6 +26,7 @@ let debounce_timer;
 const arrow = document.getElementById("arrow");
 let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
+let initialized = true; // tracks initial state
 const max_per_column = 10; // max words per column in found section
 const max_per_page = max_per_column * 3;
 const max_score = 100; // for debug
@@ -626,7 +627,6 @@ function renderDots() {
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
-  word_display.textContent = ""; // clears
   const enter_button = document.getElementById("enter-button");
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
@@ -642,8 +642,21 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => resetFocus(), 0);
   }); // event listener
 
+  // Click clears word display on initial state
+  word_display.addEventListener("click", () => {
+    if (initialized) {
+      word_display.innerText = "";
+      initialized = false;
+    } //if
+  }); // add event listener
+
   // Enter or spacebar events
   word_display.addEventListener("keydown", function(event) {
+    if (initialized) {
+      word_display.innerText = "";
+      initialized = false;
+    }; //if
+
     if (event.key === "Enter") {
       event.preventDefault();
       enter_button.click();
