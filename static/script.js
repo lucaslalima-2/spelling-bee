@@ -49,7 +49,7 @@ const word_display = document.getElementById("word-display");
 // let word_bank = new Set();
 
 // debug word_back
-let word_bank = new Set(Array.from({ length: 30 }, (_, i) => `word-${i + 1}`));
+let word_bank = new Set(Array.from({ length: 31 }, (_, i) => `word-${i + 1}`));
 
 // Function called when word is submitted
 function submitWord() {
@@ -225,24 +225,7 @@ function updateWordList(word){
   } // for
 
   // Posts all words from word_bank (webapp config)
-  // sorted_words.forEach( (word, index) => {
-  //   const colindex = Math.floor(index / max_per_column);
-  //   const word_element = document.createElement("div");
-  //   word_element.className = "underlined-word";
-  //   word_element.textContent = setTitleCase(word);
-  //   document.getElementById(`column-${colindex}`).appendChild(word_element);
-  // });
-  // -- new
-  const start_index = current_page * max_per_page;
-  const end_index = start_index + max_per_page;
-  const page_words = sorted_words.slice(start_index, end_index);
-  page_words.forEach((word, index) => {
-    const colindex = Math.floor(index / max_per_column);
-    const word_element = document.createElement("div");
-    word_element.className = "underlined-word";
-    word_element.textContent = setTitleCase(word);
-    document.getElementById(`column-${colindex}`).appendChild(word_element);
-  });
+  postVisibleWordBank();
 
   // Posts all words to word-preview (media config)
   updateWordPreview();
@@ -262,6 +245,29 @@ function updateWordPreview() {
   const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
   document.getElementById("word-preview").textContent = preview_string;
 } // function
+
+// Update visible word bank
+function postVisibleWordBank() {
+  // Clear columns
+  for (let i = 0; i <= 2; i++) {
+    document.getElementById(`column-${i}`).innerHTML = '';
+  } // for
+
+  // Find words to post
+  let sorted_words = Array.from(word_bank).sort();
+  const start_index = current_page * max_per_page;
+  const end_index = start_index + max_per_page;
+  const page_words = sorted_words.slice(start_index, end_index);
+
+  // Posts words
+  page_words.forEach((word, index) => {
+    const colindex = Math.floor(index / max_per_column);
+    const word_element = document.createElement("div");
+    word_element.className = "underlined-word";
+    word_element.textContent = setTitleCase(word);
+    document.getElementById(`column-${colindex}`).appendChild(word_element);
+  }); // page words
+}; // function post visible word bank
 
 // Function updates rank
 function updateRank(){
@@ -588,6 +594,7 @@ arrow.addEventListener("click", () => {
   } // if-else
 }); // event listener
 
+// Renders and updates dots
 function renderDots() {
   const wrapper = document.getElementById("dot-indicator-wrapper");
   const dots_container = document.getElementById("dot-indicator");
@@ -610,6 +617,7 @@ function renderDots() {
     dot.addEventListener("click", () => {
       current_page = i;
       renderDots();
+      postVisibleWordBank();
     });
 
     dots_container.appendChild(dot);
