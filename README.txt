@@ -17,7 +17,8 @@ spellingbee/
 ├── static/
 │   ├── style.css
 │   └── script.js
-├── game.py  ← your existing Python logic
+│   └── dom.js
+├── app.py  ← your existing Python logic
 
 RULES:
 =====
@@ -36,3 +37,15 @@ FUTURE UPDATES:
 ===============
 - Create binary search tree to increase speed of max_score evaluation
 - Update dictionary list to remove all words with 8+ unique letters, as they will never be used.
+- A dedicated editor is needed to see all potential words for a given day, and cull unnecessary/antequated words
+- Sliding effect between pages of found words. This transition should be smoother
+- Word-preview & word-message have an animation when toggling the word-list-container arrow
+
+RESTROSPECTIVE:
+===============
+I've learned a lot from this first html, css, js project. 
+Here's a quickly-thought-of, succinct list, coming on the heels of my last PR:
+- The power of html containers (div, span) and how I need to add more forethought into these in future projects
+- The forethought when using flex objects
+- The need for compartmentalizing my code (specifically js code) in the static folder
+- When writing js, there is a large amount of code that can optimized by declaring global variables at the top of the file. Particularly a lot of code by declaring html variables as global ones at the top of the js file. This prevents lines similar to "document.getElementById...".
