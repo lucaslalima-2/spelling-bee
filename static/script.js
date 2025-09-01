@@ -26,7 +26,9 @@ let debounce_timer;
 const arrow = document.getElementById("arrow");
 let arrow_state = "up"; // tracks arrow state
 let input_locked = false; // to prevent multiple rapid submissions
+let initialized = true; // tracks initial state
 const max_per_column = 10; // max words per column in found section
+const max_per_page = max_per_column * 3;
 const max_score = 100; // for debug
 const media_query = window.matchMedia("(max-width: 600px)");
 let rank_index = 0; // for rank_pointer setting
@@ -45,10 +47,10 @@ const percentages = [
 ]
 let score = 0;
 const word_display = document.getElementById("word-display");
-// let word_bank = new Set();
 
 // debug word_back
-let word_bank = new Set(Array.from({ length: 60 }, (_, i) => `word-${i + 1}`));
+// let word_bank = new Set(Array.from({ length: 31 }, (_, i) => `word-${i + 1}`));
+let word_bank = new Set();
 
 // Function called when word is submitted
 function submitWord() {
@@ -94,6 +96,11 @@ function submitWord() {
       } // if subset
     } // if data 
   });//if data
+
+  // Renders page dots
+  if (word_bank.size > max_per_page) {
+    renderDots();
+  }; // if
 
 } //function
 
@@ -219,13 +226,7 @@ function updateWordList(word){
   } // for
 
   // Posts all words from word_bank (webapp config)
-  sorted_words.forEach( (word, index) => {
-    const colindex = Math.floor(index / max_per_column);
-    const word_element = document.createElement("div");
-    word_element.className = "underlined-word";
-    word_element.textContent = setTitleCase(word);
-    document.getElementById(`column-${colindex}`).appendChild(word_element);
-  });
+  postVisibleWordBank();
 
   // Posts all words to word-preview (media config)
   updateWordPreview();
@@ -245,6 +246,29 @@ function updateWordPreview() {
   const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
   document.getElementById("word-preview").textContent = preview_string;
 } // function
+
+// Update visible word bank
+function postVisibleWordBank() {
+  // Clear columns
+  for (let i = 0; i <= 2; i++) {
+    document.getElementById(`column-${i}`).innerHTML = '';
+  } // for
+
+  // Find words to post
+  let sorted_words = Array.from(word_bank).sort();
+  const start_index = current_page * max_per_page;
+  const end_index = start_index + max_per_page;
+  const page_words = sorted_words.slice(start_index, end_index);
+
+  // Posts words
+  page_words.forEach((word, index) => {
+    const colindex = Math.floor(index / max_per_column);
+    const word_element = document.createElement("div");
+    word_element.className = "underlined-word";
+    word_element.textContent = setTitleCase(word);
+    document.getElementById(`column-${colindex}`).appendChild(word_element);
+  }); // page words
+}; // function post visible word bank
 
 // Function updates rank
 function updateRank(){
@@ -571,13 +595,17 @@ arrow.addEventListener("click", () => {
   } // if-else
 }); // event listener
 
+// Renders and updates dots
 function renderDots() {
-  const dot_container = document.getElementById("dot-indicator");
-  dot_container.innerHTML = ""; // Clear existing dots
+  const wrapper = document.getElementById("dot-indicator-wrapper");
+  const dots_container = document.getElementById("dot-indicator");
+  dots_container.innerHTML = ""; // Clear existing dots
 
   // Calculates number of pages needed
-  const max_per_page = max_per_column * 3; // 3 columns
-  const page_count = Math.ceil(word_bank.length / max_per_page);
+  const page_count = Math.ceil(word_bank.size / max_per_page);
+
+  // Show dot indivator when needed
+  wrapper.style.display = page_count > 1 ? "flex" : "none";
 
   for (let i = 0; i < page_count; i++) {
     const dot = document.createElement("div");
@@ -590,15 +618,15 @@ function renderDots() {
     dot.addEventListener("click", () => {
       current_page = i;
       renderDots();
+      postVisibleWordBank();
     });
 
-    dot_container.appendChild(dot);
+    dots_container.appendChild(dot);
   } // for
 } // renderDots
 
 // Event listener for Content loads. Auto-focus cursor on page load
 document.addEventListener("DOMContentLoaded", () => {
-  word_display.textContent = ""; // clears
   const enter_button = document.getElementById("enter-button");
   const delete_button = document.getElementById("delete-button");
   const shuffle_button = document.getElementById("shuffle-button");
@@ -614,8 +642,21 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => resetFocus(), 0);
   }); // event listener
 
+  // Click clears word display on initial state
+  word_display.addEventListener("click", () => {
+    if (initialized) {
+      word_display.innerText = "";
+      initialized = false;
+    } //if
+  }); // add event listener
+
   // Enter or spacebar events
   word_display.addEventListener("keydown", function(event) {
+    if (initialized) {
+      word_display.innerText = "";
+      initialized = false;
+    }; //if
+
     if (event.key === "Enter") {
       event.preventDefault();
       enter_button.click();
