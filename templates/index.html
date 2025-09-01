@@ -2,12 +2,12 @@
 <html>
   <head>
     <title>Spelling Bee</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   </head>
   <body>
     <!-- Header -->
      <div id="title-container">
       <h1 id="title">Spelling Bee</h1>
+      <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </div>
 
     <div id="game-container">
@@ -107,6 +107,6 @@
 
     <!-- External script: use the variable -->
     <script src="{{ url_for('static', filename='script.js') }}"></script>
-
+    <script src="{{ url_for('static', filename='dom.js') }}"></script>
   </body>
 </html>
