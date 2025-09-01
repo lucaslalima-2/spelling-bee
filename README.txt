@@ -1,3 +1,9 @@
+USAGE:
+======
+- git clone git@github.com:lucaslalima-2/spelling-bee.git <local-repo-name>
+- source venv/bin/activate
+- python3 app.py -w <daily word> -l <center letter>
+
 GENERAL DEVELOPMENT:
 ====================
 This is the install statement I'm using
