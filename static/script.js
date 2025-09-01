@@ -228,8 +228,7 @@ function updateWordList(word){
   });
 
   // Posts all words to word-preview (media config)
-  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
-  document.getElementById("word-preview").textContent = preview_string;
+  updateWordPreview();
 
   // Update header message (ie. "You have found x words")
   let word_message = document.getElementById("word-message");
@@ -239,6 +238,13 @@ function updateWordList(word){
     word_message.innerText = `You have found ${sorted_words.length} words`;
   } // if-else
 }// function
+
+// Updates word preview
+function updateWordPreview() {
+  let sorted_words = Array.from(word_bank).sort();
+  const preview_string = sorted_words.map(w => setTitleCase(w)).join(" ");
+  document.getElementById("word-preview").textContent = preview_string;
+} // function
 
 // Function updates rank
 function updateRank(){
@@ -491,6 +497,7 @@ function handleMediaChange(e) {
     word_message.style.display = "none";
     // Sets word_preview
     word_preview.style.display = "block";
+    updateWordPreview()
     // Hides word_columns
     word_columns.style.display = "none";
   } else { // webapp mode
@@ -525,10 +532,12 @@ arrow.addEventListener("click", () => {
   document.getElementById("word-display").classList.remove("shake");
 
   // Variables
+  const word_list_container = document.getElementById("word-list-container");
   const word_columns = document.getElementById("word-columns");
   const word_message = document.getElementById("word-message");
   const word_preview = document.getElementById("word-preview");
   const left_column = document.getElementById("left-column");
+  const right_column = document.getElementById("right-column");
 
   // Rotates arrow
   if (arrow_state == "down") {
@@ -537,10 +546,12 @@ arrow.addEventListener("click", () => {
     arrow.classList.remove("rotate_down"); // resets arrow
     arrow.classList.add("rotate_up"); // spins arrow
     // Reveals/hides elements
+    right_column.style.flexGrow = "0";
+    word_list_container.style.flexGrow = "0";
     word_preview.style.display = "block";
+    updateWordPreview();
     word_columns.style.display = "none";
     word_message.style.display = "none";
-    // Reveals left column
     left_column.style.display = "flex";
     resetFocus();
   } else {
@@ -549,10 +560,13 @@ arrow.addEventListener("click", () => {
     arrow.classList.remove("rotate_up"); // resets arrow
     arrow.classList.add("rotate_down"); // spins arrow
     // Reveals/hides elements
-    word_preview.style.display = "none";
+    right_column.style.flexGrow = "1";
+    word_list_container.style.flexGrow = "1";
+    word_preview.style.display = "block";
+    word_preview.textContent = "";
     word_columns.style.display = "flex";
-    word_message.style.display = "block";
-    // Hides left column
+    word_columns.style.flexGrow = "1";
+    word_message.style.display = "flex";
     left_column.style.display = "none";
   } // if-else
 }); // event listener
